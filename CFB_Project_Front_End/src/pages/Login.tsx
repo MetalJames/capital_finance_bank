@@ -73,7 +73,7 @@ const Login = () => {
             <div className="text-center">
                 <h1 className="text-3xl text-bold mb-4">Log In to Your Account</h1>
                 <p>
-                    or <Link to={"/signup"} className="text-sky-400 cursor-pointer">Sign Up</Link>
+                    or <Link to={"signup"} className="text-sky-400 cursor-pointer">Sign Up</Link>
                 </p>
             </div>
             <form onSubmit={handleSubmit}>
