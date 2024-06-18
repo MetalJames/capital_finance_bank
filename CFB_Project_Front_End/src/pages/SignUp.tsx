@@ -206,6 +206,7 @@ const SignUp = () => {
                     <div>
                         <input type="checkbox" checked={agree} className="mr-2" onChange={() => setAgree(!agree)} />
                         <label htmlFor="agreement" className="text-sm">Agree To Policies and Conditions</label>
+                        {getErrorMessage('agreement')}
                     </div>
                 </div>
                 <button type="submit" className='mt-4 my-2 bg-blue-700 text-white w-full p-2 hover:bg-blue-900 transition-colors duration-200'>Sign Up</button>
