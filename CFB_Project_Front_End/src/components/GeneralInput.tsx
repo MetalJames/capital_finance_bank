@@ -1,12 +1,13 @@
 type Props = {
-    text: string
-    placeholder: string
+    text: string,
+    placeholder: string,
     value: string,
     propFunction: (e: React.ChangeEvent<HTMLInputElement>) => void,
-    error?: boolean
+    error?: boolean,
+    id?: string,
 };
 
-const GeneralInput = ({text, placeholder, value, propFunction, error}: Props) => {
+const GeneralInput = ({text, placeholder, value, propFunction, error, id}: Props) => {
 
     return (
         <div>
@@ -17,6 +18,7 @@ const GeneralInput = ({text, placeholder, value, propFunction, error}: Props) =>
                 value={value}
                 onChange={propFunction}
                 required={false}
+                id={id}
             />
         </div>
     )
