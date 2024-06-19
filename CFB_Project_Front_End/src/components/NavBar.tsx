@@ -18,6 +18,7 @@ const NavBar = () => {
                             <Link to={"aboutus"}><p className="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium">About</p></Link>
                             <Link to={"contactus"}><p className="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium">Contact</p></Link>
                             <Link to={"login"}><p className="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium">Login</p></Link>
+                            <Link to={"myaccount"}><p className="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium">My Account</p></Link>
                         </div>
                     </div>
                 </div>
