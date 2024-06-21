@@ -12,7 +12,7 @@ const Home = () => {
             <header className="bg-white shadow">
                 <div className="max-w-8xl mx-auto px-1 sm:px-6 lg:px-8 flex justify-between items-center">
                 <h1 className="text-5xl font-bold text-gray-900">
-                    Capital Finance Bank
+                    Capital Finance Bank Bank
                     Test Test Test
                 </h1>
                 <div className="flex-shrink-0">
