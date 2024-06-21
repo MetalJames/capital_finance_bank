@@ -56,7 +56,7 @@ const Home = () => {
                                 <BiSupport className="h-6 w-48 inline-flex" style={{ fill: '#3B8CD5', stroke: '#3B8CD5', strokeWidth: 1 }}/>
                                 <BiHome className="h-6 w-32 inline-flex" style={{ fill: '#B1A2E0', stroke: '#B1A2E0', strokeWidth: 1 }}/>
                             </div>
-                            <div className="hidden sm:ml-8 sm:flex sm:space-x-24">
+                            <div className="hidden sm:ml-8 sm:flex sm:space-x-28">
                                 <p><Link to="/login"  className="text-white h-6 w-12 cursor-pointer">Personal</Link></p>
                                 <p> <Link to="/contactus"  className="text-white h-6 cursor-pointer">Support</Link></p>
                                 <p className="text-white h-6  cursor-pointer">Mortgage</p>
