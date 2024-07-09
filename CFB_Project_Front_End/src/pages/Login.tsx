@@ -72,17 +72,24 @@ const Login = () => {
                 alert("Login successful!");
                 // Example: Redirect to a new page after successful login
                 window.location.href = "/myaccount";
-            } catch (error: any) {
-                if (error.response && error.response.data) {
-                setErrorEmail(false);
-                setErrorPassword(false);
-                setMessage(error.response.data.message);
-                generateCaptcha();
-                } else {
-                setErrorEmail(false);
-                setErrorPassword(false);
-                setMessage("Something went wrong. Please try again later.");
-                generateCaptcha();
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    setErrorEmail(false);
+                    setErrorPassword(false);
+                    setMessage("An unexpected error occurred. Please try again later.");
+                    generateCaptcha();
+                } else if (axios.isAxiosError(error)) {
+                    if (error.response && error.response.data) {
+                        setErrorEmail(false);
+                        setErrorPassword(false);
+                        setMessage(error.response.data.message);
+                        generateCaptcha();
+                    } else {
+                        setErrorEmail(false);
+                        setErrorPassword(false);
+                        setMessage("Something went wrong. Please try again later.");
+                        generateCaptcha();
+                    }
                 }
             }
         }
