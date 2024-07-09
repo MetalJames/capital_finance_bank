@@ -34,6 +34,7 @@ router.post('/login', async (req, res) => {
         }
 
         // Successful login
+        req.session.user = user; // Store user data in session
         res.status(200).json({ message: 'Login successful', user });
     } catch (err) {
         console.error('Login error:', err);

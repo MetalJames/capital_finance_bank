@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react"
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react"
+import { Link, useNavigate } from "react-router-dom";
 import GeneralInput from "../components/GeneralInput";
 import axios from "axios";
+import UserContext from "../context/UserContext";
 
 const Login = () => {
+    const navigate = useNavigate();
+    const { setUser } = useContext(UserContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
@@ -71,7 +74,9 @@ const Login = () => {
                 generateCaptcha();
                 alert("Login successful!");
                 // Example: Redirect to a new page after successful login
-                window.location.href = "/myaccount";
+                // Assuming response.data contains user information
+                setUser(response.data); // Update UserContext with logged-in user data
+                navigate("/myaccount");
             } catch (error: unknown) {
                 if (error instanceof Error) {
                     setErrorEmail(false);
