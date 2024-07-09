@@ -51,14 +51,14 @@ const Home = () => {
                         </div>
                         </div>
                         <div className="bg-[#102C57] py-6 p-6">
-                            <div className="hidden sm:ml-8 sm:flex sm:space-x-2">
+                            <div className="hidden sm:ml-8 sm:flex sm:space-x-6">
                                 <BiUser className="h-6 w-16  inline-flex" style={{ fill: '#3B8CD5', stroke: '#3B8CD5', strokeWidth: 1 }}/>
-                                <BiSupport className="h-6 w-48 inline-flex" style={{ fill: '#3B8CD5', stroke: '#3B8CD5', strokeWidth: 1 }}/>
-                                <BiHome className="h-6 w-32 inline-flex" style={{ fill: '#B1A2E0', stroke: '#B1A2E0', strokeWidth: 1 }}/>
+                                <BiSupport className="h-6 w-52 inline-flex" style={{ fill: '#3B8CD5', stroke: '#3B8CD5', strokeWidth: 1 }}/>
+                                <BiHome className="h-6 w-28 inline-flex" style={{ fill: '#B1A2E0', stroke: '#B1A2E0', strokeWidth: 1 }}/>
                             </div>
-                            <div className="hidden sm:ml-8 sm:flex sm:space-x-24">
-                                <p className="text-white h-6 w-12 cursor-pointer">Personal</p>
-                                <p> <Link to="/signup"  className="text-white h-6 cursor-pointer">Support</Link></p>
+                            <div className="hidden sm:ml-8 sm:flex sm:space-x-28">
+                                <p><Link to="/login"  className="text-white h-6 w-12 cursor-pointer">Personal</Link></p>
+                                <p> <Link to="/contactus"  className="text-white h-6 cursor-pointer">Support</Link></p>
                                 <p className="text-white h-6  cursor-pointer">Mortgage</p>
                             </div>
                            
