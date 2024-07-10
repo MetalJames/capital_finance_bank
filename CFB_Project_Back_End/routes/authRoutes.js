@@ -2,6 +2,14 @@ const express = require('express');
 const router = express.Router();
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
+const User = require('../models/User'); // Your Mongoose User model
+
+// Function to generate random account number
+const generateAccountNumber = () => {
+    const min = 1000000000;
+    const max = 9999999999;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -45,6 +53,8 @@ router.post('/login', async (req, res) => {
 // POST /api/register route
 router.post('/register', async (req, res) => {
     const { firstName, lastName, email, phone, unitNumber, streetAddress, city, province, postalCode, password } = req.body;
+    // Generate random account number
+    const accountNumber = generateAccountNumber();
 
     try {
         const database = client.db('sample_mflix');
@@ -57,7 +67,7 @@ router.post('/register', async (req, res) => {
         }
 
         // Create a new user
-        const newUser = {
+        const newUser = new User ({
             firstName,
             lastName,
             email,
@@ -68,7 +78,13 @@ router.post('/register', async (req, res) => {
             province,
             postalCode,
             password,
-        };
+            accountNumber: accountNumber.toString(), // Convert to string if needed
+            balance: 5000,
+            accountType: "Checking",
+            openDate: new Date(),
+            transactions: [],
+            activities: [],
+        });
 
         // Insert the new user into the collection
         await collection.insertOne(newUser);

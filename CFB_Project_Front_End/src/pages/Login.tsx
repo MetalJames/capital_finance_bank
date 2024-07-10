@@ -17,6 +17,8 @@ const Login = () => {
     const [captchaNum2, setCaptchaNum2] = useState(0);
     const [captchaInput, setCaptchaInput] = useState('');
     const [captchaError, setCaptchaError] = useState(false);
+    const [showModal, setShowModal] = useState(false); // State to manage modal visibility
+    const [modalMessage, setModalMessage] = useState(''); // State to hold modal message
 
     const regEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -72,11 +74,20 @@ const Login = () => {
                 setErrorPassword(false);
                 setMessage("");
                 generateCaptcha();
-                alert("Login successful!");
+                //alert("Login successful!");
                 // Example: Redirect to a new page after successful login
                 // Assuming response.data contains user information
-                setUser(response.data.user); // Update UserContext with logged-in user data
-                navigate("/myaccount");
+                // setUser(response.data.user); // Update UserContext with logged-in user data
+                // navigate("/myaccount");
+                                // Show modal and set message
+                setShowModal(true);
+                setModalMessage("Welcome! Logging you in...");
+
+                // Redirect after 1.5 seconds
+                setTimeout(() => {
+                    setUser(response.data.user); // Update UserContext with logged-in user data
+                    navigate("/myaccount");
+                }, 1500);
             } catch (error: unknown) {
                 if (error instanceof Error) {
                     setErrorEmail(false);
@@ -147,6 +158,15 @@ const Login = () => {
                 </div>
                 <button type="submit" className='mt-4 my-2 bg-blue-700 text-white w-full p-2 hover:bg-blue-900 transition-colors duration-200'>Sign In</button>
             </form>
+            {/* Modal for success message */}
+            {showModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <div className="bg-white p-4 rounded-lg shadow-md max-w-sm">
+                        <h2 className="text-xl font-bold mb-4">Welcome!</h2>
+                        <p className="mb-4">{modalMessage}</p>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

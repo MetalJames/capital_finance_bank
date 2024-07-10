@@ -7,19 +7,19 @@ function App() {
 
   return (
     <BrowserRouter>
-    <UserProvider>
-      <header>
-        <NavBar />
-      </header>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="aboutus" element={<AboutUs />} />
-          <Route path="contactus" element={<ContactUs />} />
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<SignUp />} />
-          <Route path="myaccount" element={<MyAccountPage />} />
-        </Routes>
-    </UserProvider>
+      <UserProvider>
+        <header>
+          <NavBar />
+        </header>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="aboutus" element={<AboutUs />} />
+            <Route path="contactus" element={<ContactUs />} />
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<SignUp />} />
+            <Route path="myaccount" element={<MyAccountPage />} />
+          </Routes>
+      </UserProvider>
     </BrowserRouter>
   );
 }
