@@ -75,7 +75,7 @@ const Login = () => {
                 alert("Login successful!");
                 // Example: Redirect to a new page after successful login
                 // Assuming response.data contains user information
-                setUser(response.data); // Update UserContext with logged-in user data
+                setUser(response.data.user); // Update UserContext with logged-in user data
                 navigate("/myaccount");
             } catch (error: unknown) {
                 if (error instanceof Error) {

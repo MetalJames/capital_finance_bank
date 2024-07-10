@@ -105,8 +105,12 @@ const MyAccountPage: React.FC = () => {
             )} */}
             {user ? (
                 <div className="grid grid-cols-1 gap-4">
-                    <PersonalDetails name={user.name} email={user.email} phone={user.phone} address={user.address} />
-                    {/* Render other components with user data */}
+                    <PersonalDetails 
+                        name={`${user.firstName} ${user.lastName}`}
+                        email={user.email}
+                        phone={user.phone}
+                        address={`${user.unitNumber ? user.unitNumber + ", " : ""}${user.streetAddress}, ${user.city}, ${user.province}, ${user.postalCode}`}
+                    />
                 </div>
             ) : (
                 <div className="text-center">

@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const session = require('express-session');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 require('dotenv').config();
 const authRoutes = require('./routes/authRoutes'); // Import your auth routes
@@ -9,6 +10,14 @@ const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+
+//add this to maintain authentification across pages
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'your-secret-key', // use a secure secret in production
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false } // set to true if using HTTPS
+}));
 
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, {
