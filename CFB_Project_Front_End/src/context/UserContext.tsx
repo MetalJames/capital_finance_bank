@@ -1,10 +1,20 @@
-// UserContext.js
-import { createContext, useState } from 'react';
+// UserContext.tsx
+import { createContext, useState, ReactNode, Dispatch, SetStateAction } from 'react';
+import { User } from '../types/type';
 
-const UserContext = createContext();
+export type UserContextType = {
+    user: User | null;
+    setUser: Dispatch<SetStateAction<User | null>>;
+}
 
-export const UserProvider = ({ children }) => {
-    const [user, setUser] = useState(null); // Initialize with null or initial user state
+const UserContext = createContext<UserContextType | undefined>(undefined);
+
+type UserProviderProps = {
+    children: ReactNode;
+}
+
+export const UserProvider = ({ children }: UserProviderProps) => {
+    const [user, setUser] = useState<User | null>(null); // Initialize with null or initial user state
 
     return (
         <UserContext.Provider value={{ user, setUser }}>

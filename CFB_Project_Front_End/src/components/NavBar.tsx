@@ -1,16 +1,29 @@
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { BiUser } from "react-icons/bi";
 import Logo from "../assets/CFB_Logo_Updated.png"
-import { useContext } from "react";
-import UserContext from "../context/UserContext";
+import { useState } from "react";
+//import { useContext, useState } from "react";
+//import UserContext from "../context/UserContext";
+import useUserContext from "../hooks/useUserContext";
 
 const NavBar = () => {
     const location = useLocation();
     const isActive = (path: string) => location.pathname === path;
-    const { user, setUser } = useContext(UserContext);
+    const { user, setUser } = useUserContext();
+    const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false); // State to manage modal visibility
+    const [modalMessage, setModalMessage] = useState(''); // State to hold modal message
 
     const handleLogout = () => {
-        setUser(null); // Clear user data on logout
+        setShowModal(true);
+        setModalMessage("Logging you out...");
+
+        // Redirect after 1.5 seconds
+        setTimeout(() => {
+            setUser(null); // Clear user data on logout
+            navigate("/");
+            setShowModal(false);
+        }, 1500);
     };
 
     return (
@@ -54,8 +67,17 @@ const NavBar = () => {
                             )}
                             
                         </div> 
+                        {/* Modal for success message */}
+                        {showModal && (
+                            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                                <div className="bg-white p-4 rounded-lg shadow-md max-w-sm">
+                                    <h2 className="text-xl font-bold mb-4">See You!</h2>
+                                    <p className="mb-4">{modalMessage}</p>
+                                </div>
+                            </div>
+                        )}
                     </div>
-            </div>
+                </div>
             </nav>
         </div>
     )

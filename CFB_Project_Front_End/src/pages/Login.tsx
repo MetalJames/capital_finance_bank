@@ -87,6 +87,7 @@ const Login = () => {
                 setTimeout(() => {
                     setUser(response.data.user); // Update UserContext with logged-in user data
                     navigate("/myaccount");
+                    setShowModal(false);
                 }, 1500);
             } catch (error: unknown) {
                 if (error instanceof Error) {

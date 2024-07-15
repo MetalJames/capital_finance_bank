@@ -6,25 +6,25 @@ import UserContext from "../context/UserContext";
 const MyAccountPage: React.FC = () => {
   // Example data (replace with actual fetched data)
     const { user } = useContext(UserContext);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [accountNumber] = useState("1234567890");
-    const [balance] = useState(5000);
-    const [accountType] = useState("Checking");
-    const [openDate] = useState("2022-01-01");
-    const [name] = useState("John Doe");
-    const [email] = useState("john.doe@example.com");
-    const [phone] = useState("123-456-7890");
-    const [address] = useState("123 Main St, Anytown, USA");
-    const [transactions, setTransactions] = useState([
-        { id: 1, date: "2023-06-01", description: "Grocery Store", amount: -54.23 },
-        { id: 2, date: "2023-06-02", description: "Salary", amount: 2000.00 },
-        { id: 3, date: "2023-06-03", description: "Electricity Bill", amount: -123.45 },
-    ]);
-    const [activities] = useState([
-        { id: 1, date: "2023-06-01", description: "Logged in from IP 123.456.789.000" },
-        { id: 2, date: "2023-06-02", description: "Transferred $200 to Savings" },
-        { id: 3, date: "2023-06-03", description: "Changed password" },
-    ]);
+    // const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // const [accountNumber] = useState("1234567890");
+    // const [balance] = useState(5000);
+    // const [accountType] = useState("Checking");
+    // const [openDate] = useState("2022-01-01");
+    // const [name] = useState("John Doe");
+    // const [email] = useState("john.doe@example.com");
+    // const [phone] = useState("123-456-7890");
+    // const [address] = useState("123 Main St, Anytown, USA");
+    // const [transactions, setTransactions] = useState([
+    //     { id: 1, date: "2023-06-01", description: "Grocery Store", amount: -54.23 },
+    //     { id: 2, date: "2023-06-02", description: "Salary", amount: 2000.00 },
+    //     { id: 3, date: "2023-06-03", description: "Electricity Bill", amount: -123.45 },
+    // ]);
+    // const [activities] = useState([
+    //     { id: 1, date: "2023-06-01", description: "Logged in from IP 123.456.789.000" },
+    //     { id: 2, date: "2023-06-02", description: "Transferred $200 to Savings" },
+    //     { id: 3, date: "2023-06-03", description: "Changed password" },
+    // ]);
 
 
     console.log(user);
@@ -55,37 +55,37 @@ const MyAccountPage: React.FC = () => {
 
 
 
-    // Example useEffect to fetch transactions
-    useEffect(() => {
-        // Example fetch call (replace with actual fetch logic)
-        const fetchTransactions = async () => {
-        try {
-            // Simulating fetching transactions from an API
-            const response = await fetch("/api/transactions");
-            const data = await response.json();
-            setTransactions(data.transactions);
-        } catch (error) {
-            console.error("Error fetching transactions:", error);
-        }
-        };
+    // // Example useEffect to fetch transactions
+    // useEffect(() => {
+    //     // Example fetch call (replace with actual fetch logic)
+    //     const fetchTransactions = async () => {
+    //     try {
+    //         // Simulating fetching transactions from an API
+    //         const response = await fetch("/api/transactions");
+    //         const data = await response.json();
+    //         setTransactions(data.transactions);
+    //     } catch (error) {
+    //         console.error("Error fetching transactions:", error);
+    //     }
+    //     };
 
-        fetchTransactions();
-    }, []);
+    //     fetchTransactions();
+    // }, []);
 
-    useEffect(() => {
-        // Example check if user is logged in 
-        const checkLoggedIn = () => {
-            // Example check
-            const isLoggedIn = localStorage.getItem("isLoggedIn");
-            if (isLoggedIn === "true") {
-                setIsLoggedIn(true);
-            } else {
-                setIsLoggedIn(false);
-            }
-        };
+    // useEffect(() => {
+    //     // Example check if user is logged in 
+    //     const checkLoggedIn = () => {
+    //         // Example check
+    //         const isLoggedIn = localStorage.getItem("isLoggedIn");
+    //         if (isLoggedIn === "true") {
+    //             setIsLoggedIn(true);
+    //         } else {
+    //             setIsLoggedIn(false);
+    //         }
+    //     };
 
-        checkLoggedIn();
-    }, []);
+    //     checkLoggedIn();
+    // }, []);
 
     return (
         <div className="max-w-4xl mx-auto mt-8 p-4">

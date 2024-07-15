@@ -78,12 +78,36 @@ router.post('/register', async (req, res) => {
             province,
             postalCode,
             password,
-            accountNumber: accountNumber.toString(), // Convert to string if needed
-            balance: 5000,
-            accountType: "Checking",
-            openDate: new Date(),
-            transactions: [],
-            activities: [],
+            accounts: [
+                {
+                    accountNumber: accountNumber.toString(), // Convert to string if needed
+                    balance: 5000,
+                    accountType: "Checking",
+                    openDate: new Date()
+                },
+                {
+                    accountNumber: accountNumber.toString() + '-SAV', // Append suffix to differentiate accounts
+                    balance: 3000,
+                    accountType: "Saving",
+                    openDate: new Date()
+                },
+                {
+                    accountNumber: accountNumber.toString() + '-CRD', // Append suffix to differentiate accounts
+                    balance: 1000,
+                    accountType: "Credit",
+                    openDate: new Date()
+                }
+            ],
+            transactions: [
+                { id: 1, date: "2023-06-01", description: "Grocery Store", amount: -54.23 },
+                { id: 2, date: "2023-06-02", description: "Salary", amount: 2000.00 },
+                { id: 3, date: "2023-06-03", description: "Electricity Bill", amount: -123.45 },
+            ],
+            activities: [
+                { id: 1, date: "2023-06-01", description: "Logged in from IP 123.456.789.000" },
+                { id: 2, date: "2023-06-02", description: "Transferred $200 to Savings" },
+                { id: 3, date: "2023-06-03", description: "Changed password" },
+            ],
         });
 
         // Insert the new user into the collection
