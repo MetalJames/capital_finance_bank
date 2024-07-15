@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AccountSummary, PersonalDetails, RecentActivities, TransactionHistory } from "../components";
 import UserContext from "../context/UserContext";
+import axios from "axios";
 
 const MyAccountPage: React.FC = () => {
   // Example data (replace with actual fetched data)
@@ -87,6 +88,39 @@ const MyAccountPage: React.FC = () => {
     //     checkLoggedIn();
     // }, []);
 
+
+    const [transferData, setTransferData] = useState({
+        fromAccountNumber: '',
+        toAccountNumber: '',
+        amount: 0,
+    });
+
+// Create Axios instance with base URL
+const axiosInstance = axios.create({
+    baseURL: 'http://localhost:5000/api', // Adjust as per your backend server setup
+});
+
+const handleTransfer = async () => {
+    try {
+        const response = await axiosInstance.post('/transfer', transferData);
+        console.log(response.data); // Handle success response
+        // Optionally update local state or trigger a refresh of account data
+    } catch (error) {
+        console.error('Transfer error:', error.response.data); // Handle error response
+    }
+};
+
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setTransferData({ ...transferData, [name]: value });
+    };
+
+
+
+
+
+
     return (
         <div className="max-w-4xl mx-auto mt-8 p-4">
             <h1 className="text-2xl font-bold mb-4">My Account</h1>
@@ -111,6 +145,50 @@ const MyAccountPage: React.FC = () => {
                         phone={user.phone}
                         address={`${user.unitNumber ? user.unitNumber + ", " : ""}${user.streetAddress}, ${user.city}, ${user.province}, ${user.postalCode}`}
                     />
+                    <TransactionHistory transactions={user.transactions} />
+                    <AccountSummary accounts={user.accounts} />
+
+
+
+                <div>
+                    <h2>Transfer Funds</h2>
+                        <div>
+                            <label htmlFor="fromAccountNumber">From Account:</label>
+                            <input
+                                type="text"
+                                id="fromAccountNumber"
+                                name="fromAccountNumber"
+                                value={transferData.fromAccountNumber}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="toAccountNumber">To Account:</label>
+                            <input
+                                type="text"
+                                id="toAccountNumber"
+                                name="toAccountNumber"
+                                value={transferData.toAccountNumber}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="amount">Amount:</label>
+                            <input
+                                type="number"
+                                id="amount"
+                                name="amount"
+                                value={transferData.amount}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <button onClick={handleTransfer}>Transfer</button>
+                    </div>
+
+
+
+
+
                 </div>
             ) : (
                 <div className="text-center">
