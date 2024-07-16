@@ -121,7 +121,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// POST /api/transfer route
+/// POST /api/transfer route
 router.post('/transfer', async (req, res) => {
     const { fromAccountNumber, toAccountNumber, amount } = req.body;
 
@@ -145,14 +145,16 @@ router.post('/transfer', async (req, res) => {
             return res.status(400).json({ message: 'Invalid account types' });
         }
 
-        if (fromAccount.balance < amount) {
-            console.error('Insufficient funds');
-            return res.status(400).json({ message: 'Insufficient funds' });
+        const parsedAmount = parseFloat(amount);
+
+        if (isNaN(parsedAmount) || fromAccount.balance < parsedAmount) {
+            console.error('Insufficient funds or invalid amount');
+            return res.status(400).json({ message: 'Insufficient funds or invalid amount' });
         }
 
         // Perform the transfer
-        fromAccount.balance = Number(fromAccount.balance) - Number(amount);
-        toAccount.balance = Number(toAccount.balance) + Number(amount);
+        fromAccount.balance = Number(fromAccount.balance) - parsedAmount;
+        toAccount.balance = Number(toAccount.balance) + parsedAmount;
 
         // Update the user's accounts in MongoDB
         await collection.updateOne(
@@ -165,7 +167,7 @@ router.post('/transfer', async (req, res) => {
             id: user.transactions.length + 1,
             date: new Date().toISOString(),
             description: `Transfer from ${fromAccount.accountType} to ${toAccount.accountType}`,
-            amount: -amount,
+            amount: -parsedAmount,
         };
         user.transactions.push(transaction);
 
@@ -184,9 +186,9 @@ router.post('/transfer', async (req, res) => {
 
 // POST /api/activity route
 router.post('/activity', async (req, res) => {
-    const { fromAccountNumber, amount } = req.body;
+    const { fromAccountNumber, amount, description } = req.body;
 
-    console.log('Payment request received:', { fromAccountNumber, amount });
+    console.log('Payment request received:', { fromAccountNumber, amount, description });
 
     try {
         const database = client.db('sample_mflix');
@@ -210,8 +212,15 @@ router.post('/activity', async (req, res) => {
             return res.status(400).json({ message: 'Insufficient funds' });
         }
 
+        // Ensure amount is a number
+        const parsedAmount = Number(amount);
+        if (isNaN(parsedAmount)) {
+            console.error('Invalid amount');
+            return res.status(400).json({ message: 'Invalid amount' });
+        }
+
         // Perform the transfer
-        fromAccount.balance -= amount;
+        fromAccount.balance -= parsedAmount;
 
         // Update the user's accounts in MongoDB
         await collection.updateOne(
@@ -223,8 +232,8 @@ router.post('/activity', async (req, res) => {
         const activity = {
             id: user.activities.length + 1,
             date: new Date().toISOString(),
-            description: `Payment from ${fromAccount.accountType} account`,
-            amount: -amount,
+            description: description || `Payment from ${fromAccount.accountType} account`,
+            amount: -parsedAmount,
         };
         user.activities.push(activity);
 
@@ -240,6 +249,7 @@ router.post('/activity', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
 
 // GET /api/user route
 router.get('/user', async (req, res) => {

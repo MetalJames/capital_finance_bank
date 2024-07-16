@@ -17,25 +17,63 @@ const TransferFunds = () => {
         amount: '',
     });
 
+    // State for modal
+    const [showModal, setShowModal] = useState(false);
+    const [message, setMessage] = useState('');
+
     // Handle transfer action
     const handleTransfer = async () => {
+        const { fromAccountNumber, toAccountNumber } = transferData;
+
+        if (fromAccountNumber === toAccountNumber) {
+            setMessage('Cannot transfer funds to the same account.');
+            setShowModal(true);
+            return;
+        }
+
+        const fromAccount = user!.accounts.find(acc => acc.accountType === transferData.fromAccountNumber);
+        const amount = parseFloat(transferData.amount);
+
+        if (fromAccount && fromAccount.balance < amount) {
+            setMessage('Insufficient funds. The transfer amount is greater than the available balance.');
+            setShowModal(true);
+            return;
+        }
+
         try {
-            const response = await axiosInstance.post('/transfer', transferData);
+            const response = await axiosInstance.post('/transfer', { 
+                fromAccountNumber: transferData.fromAccountNumber, 
+                toAccountNumber: transferData.toAccountNumber, 
+                amount 
+            });
             // Refresh user data after successful transfer
             refreshUserData();
             console.log(response.data); // Handle success response
             // Optionally update local state or trigger a refresh of account data
         } catch (error) {
-            console.error('Transfer error:', error.response.data); // Handle error response
+            handleError(error); // Handle error response
         }
+
         setTransferData({
             fromAccountNumber: '',
             toAccountNumber: '',
             amount: '',
-        })
+        });
     };
 
-    const handleChange = (e) => {
+    const handleError = (error: unknown) => {
+        let errorMessage = 'An unexpected error occurred. Please try again later.';
+        
+        if (axios.isAxiosError(error)) {
+            if (error.response && error.response.data && typeof error.response.data.message === 'string') {
+                errorMessage = error.response.data.message;
+            }
+        }
+
+        console.error('Payment error:', errorMessage);
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         e.preventDefault();
         const { name, value } = e.currentTarget;
         setTransferData(prevState => ({
@@ -60,7 +98,7 @@ const TransferFunds = () => {
                     value={transferData.fromAccountNumber}
                 >
                     <option value="">Select Account</option>
-                    {user.accounts.map((account) => (
+                    {user!.accounts.map((account) => (
                         <option key={account._id} value={account.accountType}>{account.accountType}</option>
                     ))}
                 </select>
@@ -74,7 +112,7 @@ const TransferFunds = () => {
                     value={transferData.toAccountNumber}
                 >
                     <option value="">Select Account</option>
-                    {user.accounts.map((account) => (
+                    {user!.accounts.map((account) => (
                         <option key={account._id} value={account.accountType}>{account.accountType}</option>
                     ))}
                 </select>
@@ -90,6 +128,17 @@ const TransferFunds = () => {
                 />
             </div>
             <button onClick={handleTransfer}>Transfer</button>
+
+            {/* Modal for error message */}
+            {showModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <div className="bg-white p-4 rounded-lg shadow-md max-w-sm">
+                        <h2 className="text-xl font-bold mb-4">Error</h2>
+                        <p className="mb-4">{message}</p>
+                        <button onClick={() => setShowModal(false)} className="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-900 transition-colors duration-200">Close</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

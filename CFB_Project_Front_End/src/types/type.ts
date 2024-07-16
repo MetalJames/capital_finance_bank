@@ -1,5 +1,6 @@
 // User.ts
 export type Account = {
+    _id: string;
     accountNumber: string;
     balance: number;
     accountType: 'Checking' | 'Saving' | 'Credit';
