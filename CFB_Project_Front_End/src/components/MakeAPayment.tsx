@@ -21,6 +21,7 @@ const MakeAPayment = () => {
     // State for modal
     const [showModal, setShowModal] = useState(false);
     const [message, setMessage] = useState('');
+    const [successModal, setSuccessModal] = useState(false);
 
     const handleActivity = async () => {
         const fromAccount = user!.accounts.find(acc => acc.accountType === activity.fromAccountNumber);
@@ -40,14 +41,15 @@ const MakeAPayment = () => {
             });
             refreshUserData();
             console.log(response.data);
+            setActivity({
+                fromAccountNumber: '',
+                amount: '',
+                description: '',
+            });
+            setSuccessModal(true); // Show success modal
         } catch (error) {
             handleError(error);
         }
-        setActivity({
-            fromAccountNumber: '',
-            amount: '',
-            description: '',
-        })
     };
 
     const handleError = (error: unknown) => {
@@ -91,6 +93,7 @@ const MakeAPayment = () => {
                         type="number"
                         id="amount"
                         name="amount"
+                        value={activity.amount}
                         step="0.01" // Allow decimal amounts
                         onChange={handleChangeActivity}
                         placeholder="Enter Amount"
@@ -115,6 +118,17 @@ const MakeAPayment = () => {
                             <h2 className="text-xl font-bold mb-4">Error</h2>
                             <p className="mb-4">{message}</p>
                             <button onClick={() => setShowModal(false)} className="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-900 transition-colors duration-200">Close</button>
+                        </div>
+                    </div>
+                )}
+
+                {/* Modal for success message */}
+                {successModal && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                        <div className="bg-white p-4 rounded-lg shadow-md max-w-sm">
+                            <h2 className="text-xl font-bold mb-4">Success</h2>
+                            <p className="mb-4">Transfer completed successfully!</p>
+                            <button onClick={() => setSuccessModal(false)} className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors duration-200">Close</button>
                         </div>
                     </div>
                 )}
