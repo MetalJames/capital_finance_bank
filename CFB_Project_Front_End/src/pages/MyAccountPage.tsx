@@ -1,125 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AccountSummary, PersonalDetails, RecentActivities, TransactionHistory } from "../components";
-import UserContext from "../context/UserContext";
-import axios from "axios";
+import TransferFunds from "../components/TransferFunds";
+import MakeAPayment from "../components/MakeAPayment";
+import useUserContext from "../hooks/useUserContext";
+
 
 const MyAccountPage: React.FC = () => {
   // Example data (replace with actual fetched data)
-    const { user } = useContext(UserContext);
-    // const [isLoggedIn, setIsLoggedIn] = useState(false);
-    // const [accountNumber] = useState("1234567890");
-    // const [balance] = useState(5000);
-    // const [accountType] = useState("Checking");
-    // const [openDate] = useState("2022-01-01");
-    // const [name] = useState("John Doe");
-    // const [email] = useState("john.doe@example.com");
-    // const [phone] = useState("123-456-7890");
-    // const [address] = useState("123 Main St, Anytown, USA");
-    // const [transactions, setTransactions] = useState([
-    //     { id: 1, date: "2023-06-01", description: "Grocery Store", amount: -54.23 },
-    //     { id: 2, date: "2023-06-02", description: "Salary", amount: 2000.00 },
-    //     { id: 3, date: "2023-06-03", description: "Electricity Bill", amount: -123.45 },
-    // ]);
-    // const [activities] = useState([
-    //     { id: 1, date: "2023-06-01", description: "Logged in from IP 123.456.789.000" },
-    //     { id: 2, date: "2023-06-02", description: "Transferred $200 to Savings" },
-    //     { id: 3, date: "2023-06-03", description: "Changed password" },
-    // ]);
-
-
+    const { user } = useUserContext();
     console.log(user);
-
-
-
-
-    // const [accountNumber, setAccountNumber] = useState("1234567890");
-    // const [balance, setBalance] = useState(5000);
-    // const [accountType, setAccountType] = useState("Checking");
-    // const [openDate, setOpenDate] = useState("2022-01-01");
-    // const [name, setName] = useState("John Doe");
-    // const [email, setEmail] = useState("john.doe@example.com");
-    // const [phone, setPhone] = useState("123-456-7890");
-    // const [address, setAddress] = useState("123 Main St, Anytown, USA");
-    // const [transactions, setTransactions] = useState([
-    //     { id: 1, date: "2023-06-01", description: "Grocery Store", amount: -54.23 },
-    //     { id: 2, date: "2023-06-02", description: "Salary", amount: 2000.00 },
-    //     { id: 3, date: "2023-06-03", description: "Electricity Bill", amount: -123.45 },
-    // ]);
-    // const [activities, setActivities] = useState([
-    //     { id: 1, date: "2023-06-01", description: "Logged in from IP 123.456.789.000" },
-    //     { id: 2, date: "2023-06-02", description: "Transferred $200 to Savings" },
-    //     { id: 3, date: "2023-06-03", description: "Changed password" },
-    // ]);
-
-
-
-
-
-    // // Example useEffect to fetch transactions
-    // useEffect(() => {
-    //     // Example fetch call (replace with actual fetch logic)
-    //     const fetchTransactions = async () => {
-    //     try {
-    //         // Simulating fetching transactions from an API
-    //         const response = await fetch("/api/transactions");
-    //         const data = await response.json();
-    //         setTransactions(data.transactions);
-    //     } catch (error) {
-    //         console.error("Error fetching transactions:", error);
-    //     }
-    //     };
-
-    //     fetchTransactions();
-    // }, []);
-
-    // useEffect(() => {
-    //     // Example check if user is logged in 
-    //     const checkLoggedIn = () => {
-    //         // Example check
-    //         const isLoggedIn = localStorage.getItem("isLoggedIn");
-    //         if (isLoggedIn === "true") {
-    //             setIsLoggedIn(true);
-    //         } else {
-    //             setIsLoggedIn(false);
-    //         }
-    //     };
-
-    //     checkLoggedIn();
-    // }, []);
-
-
-    const [transferData, setTransferData] = useState({
-        fromAccountNumber: '',
-        toAccountNumber: '',
-        amount: 0,
-    });
-
-// Create Axios instance with base URL
-const axiosInstance = axios.create({
-    baseURL: 'http://localhost:5000/api', // Adjust as per your backend server setup
-});
-
-const handleTransfer = async () => {
-    try {
-        const response = await axiosInstance.post('/transfer', transferData);
-        console.log(response.data); // Handle success response
-        // Optionally update local state or trigger a refresh of account data
-    } catch (error) {
-        console.error('Transfer error:', error.response.data); // Handle error response
-    }
-};
-
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setTransferData({ ...transferData, [name]: value });
-    };
-
-
-
-
-
 
     return (
         <div className="max-w-4xl mx-auto mt-8 p-4">
@@ -147,43 +36,22 @@ const handleTransfer = async () => {
                     />
                     <TransactionHistory transactions={user.transactions} />
                     <AccountSummary accounts={user.accounts} />
+                    <RecentActivities activities={user.activities} />
+
+
+                    <TransferFunds />
+                    <MakeAPayment />
 
 
 
-                <div>
-                    <h2>Transfer Funds</h2>
-                        <div>
-                            <label htmlFor="fromAccountNumber">From Account:</label>
-                            <input
-                                type="text"
-                                id="fromAccountNumber"
-                                name="fromAccountNumber"
-                                value={transferData.fromAccountNumber}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="toAccountNumber">To Account:</label>
-                            <input
-                                type="text"
-                                id="toAccountNumber"
-                                name="toAccountNumber"
-                                value={transferData.toAccountNumber}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="amount">Amount:</label>
-                            <input
-                                type="number"
-                                id="amount"
-                                name="amount"
-                                value={transferData.amount}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <button onClick={handleTransfer}>Transfer</button>
-                    </div>
+
+
+
+                
+
+
+
+
 
 
 

@@ -3,7 +3,7 @@ export type Account = {
     accountNumber: string;
     balance: number;
     accountType: 'Checking' | 'Saving' | 'Credit';
-    openDate: Date;
+    openDate: string;
 }
 
 export type Transaction = {

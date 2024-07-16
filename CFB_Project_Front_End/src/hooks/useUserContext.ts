@@ -1,7 +1,6 @@
 // hooks/useUserContext.ts
 import { useContext } from 'react';
-import UserContext from '../context/UserContext';
-import { UserContextType } from '../context/UserContext';
+import UserContext, { UserContextType } from '../context/UserContext';
 
 const useUserContext = (): UserContextType => {
     const context = useContext(UserContext);

@@ -182,6 +182,79 @@ router.post('/transfer', async (req, res) => {
     }
 });
 
+// POST /api/activity route
+router.post('/activity', async (req, res) => {
+    const { fromAccountNumber, amount } = req.body;
 
+    console.log('Payment request received:', { fromAccountNumber, amount });
+
+    try {
+        const database = client.db('sample_mflix');
+        const collection = database.collection('bankData');
+
+        // Find the user by their email
+        const user = await collection.findOne({ email: 'volodyaruzhak@gmail.com' });
+
+        console.log('User found:', user); // Log user object to inspect accounts
+
+        // Validate accounts and transfer amount
+        const fromAccount = user.accounts.find(acc => acc.accountType === fromAccountNumber);
+
+        if (!fromAccount) {
+            console.error('Invalid account types');
+            return res.status(400).json({ message: 'Invalid account types' });
+        }
+
+        if (fromAccount.balance < amount) {
+            console.error('Insufficient funds');
+            return res.status(400).json({ message: 'Insufficient funds' });
+        }
+
+        // Perform the transfer
+        fromAccount.balance -= amount;
+
+        // Update the user's accounts in MongoDB
+        await collection.updateOne(
+            { email: 'volodyaruzhak@gmail.com' },
+            { $set: { accounts: user.accounts } }
+        );
+
+        // Log the activity
+        const activity = {
+            id: user.activities.length + 1,
+            date: new Date().toISOString(),
+            description: `Payment from ${fromAccount.accountType} account`,
+            amount: -amount,
+        };
+        user.activities.push(activity);
+
+        await collection.updateOne(
+            { email: 'volodyaruzhak@gmail.com' },
+            { $set: { activities: user.activities } }
+        );
+
+        console.log('Payment successful:', activity);
+        res.status(200).json({ message: 'Payment successful', activity });
+    } catch (err) {
+        console.error('Payment error:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// GET /api/user route
+router.get('/user', async (req, res) => {
+    try {
+        const database = client.db('sample_mflix');
+        const collection = database.collection('bankData');
+
+        // Find the user by their email
+        const user = await collection.findOne({ email: 'volodyaruzhak@gmail.com' });
+
+        res.status(200).json(user);
+    } catch (err) {
+        console.error('Error fetching user data:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
 module.exports = router;
