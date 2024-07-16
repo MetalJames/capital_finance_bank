@@ -26,8 +26,8 @@ const NavBar = () => {
                         </div>
                     </div>
                         <div className="hidden sm:ml-6 sm:flex sm:space-x-4">
-                            <Link to={"/contactus"}><p className={`${isActive("/contactus") ? "text-white border-b-2 border-white" : "text-gray-500 border-transparent"
-                                }"text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium`}>Contact Us</p></Link>
+                            <Link to={"/HelpCenter"}><p className={`${isActive("/HelpCenter") ? "text-white border-b-2 border-white" : "text-gray-500 border-transparent"
+                                }"text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium`}>Help Center</p></Link>
                             
                             <Link to={"/login"}><BiUser className="h-6 w-6 mr-1 inline-flex image-center" style={{ fill: '#3B8CD5', stroke: '#3B8CD5', strokeWidth: 1 }}/>
                             <p className={`${isActive("/login") ? "text-white border-b-2 border-white" : "text-gray-500 border-transparent"

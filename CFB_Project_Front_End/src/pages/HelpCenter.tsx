@@ -6,7 +6,7 @@ import ratesAndCurrency from "../assets/Rates and Currency.png";
 import cardsAndCheque from "../assets/Cards And Cheque.png"
 import bank from "../assets/bank.jpg"
 
-const ContactUs = () => {
+const HelpCenter = () => {
     return (
         <div className="min-h-screen bg-[#FEFAF6] flex flex-col">
              <header className="bg-white shadow">
@@ -21,20 +21,19 @@ const ContactUs = () => {
                 <p className="text-lg px-4 sm:px-0 lg:px-8 italic text-gray-600">Your financial partner for a secure and prosperous future.</p>
              </header>
              <main className="flex-grow">
-             <div className="px-6 sm:px-6">
-             <div className="border-1 border-dashed py-6 bg-[#102C57] rounded-lg grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-8 sm:px-10 lg:px-10 p-4">
-             <div className="h-30 max-w-xl  sm:px-6 lg:px-20 ">
+             <div className="px-1 sm:px-6">
+             <div className="border-1 border-dashed py-6 bg-[#102C57] rounded-lg grid grid-cols-2 gap-40 sm:grid-cols-2 lg:grid-cols-2 sm:px-1 lg:px-1 p-1">
+             <div className="h-30 max-w-xl  sm:px-1 lg:px-20 ">
              <h2 className="text-2xl font-bold text-white">
              Help Center
                 </h2>
                 <p className ="text-white"> Find what you are looking for </p> 
         
-                <input type = "text" placeholder="Search..."className="bg-white text-black placeholder-gray-500  px-4 py-2 border border-gray-300 w-80"/> 
+                <input type = "text" placeholder="Search..."className="bg-white text-black placeholder-gray  px-1 py-2 border border-gray-300 w-80"/> 
 
                 </div>
-                <div className = "flex-shrink-0 rounded-lg sm:px-5 lg:px-10 bg-blend-normal">
-                <img className="h-30 w-40 rounded-lg " src={bank} alt="Bank "/>
-
+                <div className = "flex-shrink-0 rounded-lg sm:px-20 lg:px-40 bg-blend-normal ">
+                <img className="h-30 w-40 rounded-lg " src={bank} alt="Bank"/>
                 </div>
                 </div>
                 
@@ -96,4 +95,4 @@ const ContactUs = () => {
     )
 }
 
-export default ContactUs
+export default HelpCenter
