@@ -62,9 +62,10 @@ const Home = () => {
                                 <p className="text-white h-6  cursor-pointer">Mortgage</p>
                             </div>
                            
-                        </div>
+                        </div >
                        
-                    </div>
+                    </div >
+                     
                     </div>
                 </div>
                 </div>
