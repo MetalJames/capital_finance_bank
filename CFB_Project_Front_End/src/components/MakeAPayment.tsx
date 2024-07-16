@@ -20,14 +20,23 @@ const MakeAPayment = () => {
     const handleActivity = async () => {
         try {
             const response = await axiosInstance.post('/activity', activity);
-
-            // Refresh user data
             refreshUserData();
-            console.log(response.data); // Handle success response
-            // Optionally update local state or trigger a refresh of account data
+            console.log(response.data);
         } catch (error) {
-            console.error('Payment error:', error.response?.data || error.message); // Handle error response
+            handleError(error);
         }
+    };
+
+    const handleError = (error: unknown) => {
+        let errorMessage = 'An unexpected error occurred. Please try again later.';
+        
+        if (axios.isAxiosError(error)) {
+            if (error.response && error.response.data && typeof error.response.data.message === 'string') {
+                errorMessage = error.response.data.message;
+            }
+        }
+
+        console.error('Payment error:', errorMessage);
     };
 
     const handleChangeActivity = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,37 +46,30 @@ const MakeAPayment = () => {
 
     return (
         <div>
-
-
-
+            <div>
+                <h2>Pay Your Bill</h2>
                 <div>
-                    <h2>Pay Your Bill</h2>
-                    <div>
-                        <label htmlFor="fromAccountNumberActivity">From Account:</label>
-                        <input
-                            type="text"
-                            id="fromAccountNumberActivity"
-                            name="fromAccountNumber"
-                            value={activity.fromAccountNumber}
-                            onChange={handleChangeActivity}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="amountActivity">Amount:</label>
-                        <input
-                            type="number"
-                            id="amountActivity"
-                            name="amountActivity"
-                            value={activity.amountActivity}
-                            onChange={handleChangeActivity}
-                        />
-                    </div>
-                    <button onClick={handleActivity}>Pay</button>
+                    <label htmlFor="fromAccountNumberActivity">From Account:</label>
+                    <input
+                        type="text"
+                        id="fromAccountNumberActivity"
+                        name="fromAccountNumber"
+                        value={activity.fromAccountNumber}
+                        onChange={handleChangeActivity}
+                    />
                 </div>
-
-
-
-
+                <div>
+                    <label htmlFor="amountActivity">Amount:</label>
+                    <input
+                        type="number"
+                        id="amountActivity"
+                        name="amountActivity"
+                        value={activity.amountActivity}
+                        onChange={handleChangeActivity}
+                    />
+                </div>
+                <button onClick={handleActivity}>Pay</button>
+            </div>
         </div>
     )
 }

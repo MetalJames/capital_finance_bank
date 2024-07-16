@@ -151,8 +151,8 @@ router.post('/transfer', async (req, res) => {
         }
 
         // Perform the transfer
-        fromAccount.balance -= amount;
-        toAccount.balance += amount;
+        fromAccount.balance = Number(fromAccount.balance) - Number(amount);
+        toAccount.balance = Number(toAccount.balance) + Number(amount);
 
         // Update the user's accounts in MongoDB
         await collection.updateOne(
