@@ -20,9 +20,9 @@ const NavBar = () => {
                             <Link to={"/"}><p className={`${isActive("/") ? "text-white border-b-2 border-white" : "text-gray-500 border-transparent"
                                 }"text-white inline-flex items-center px-1 pt-1 text-sm font-medium`}>Home</p></Link>
                             <Link to={"myaccount"}><p className={`${isActive("/myaccount") ? "text-white border-b-2 border-white" : "text-gray-500 border-transparent"
-                                }"text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium`}>My Accounts</p></Link>
+                                }"text-gray-500 hover:text-gray-900 transition-all inline-flex items-center px-1 pt-1 text-sm font-medium`}>My Accounts</p></Link>
                             <Link to={"aboutus"}><p className={`${isActive("/aboutus") ? "text-white border-b-2 border-white" : "text-gray-500 border-transparent"
-                                }"text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium`}>Learn</p></Link>
+                                }"text-gray-500 hover:text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium`}>Learn</p></Link>
                         </div>
                     </div>
                         <div className="hidden sm:ml-6 sm:flex sm:space-x-4">
@@ -35,9 +35,10 @@ const NavBar = () => {
                                      Login</p></Link>
                             
                         </div> 
-                                </div>
-            </div>
+                    </div>
+                </div>
             </nav>
+            <footer />
         </div>
     )
 }

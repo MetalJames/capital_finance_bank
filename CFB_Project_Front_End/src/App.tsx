@@ -1,4 +1,4 @@
-import { NavBar } from "./components";
+import { NavBar, Footer } from "./components";
 import { AboutUs, ContactUs, Home, Login, MyAccountPage, SignUp } from "./pages";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -17,7 +17,8 @@ function App() {
         <Route path="signup" element={<SignUp />} />
         <Route path="myaccount" element={<MyAccountPage />} />
       </Routes>
-    </BrowserRouter>
+    <Footer />
+  </BrowserRouter>
   );
 }
 
