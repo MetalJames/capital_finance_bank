@@ -1,4 +1,3 @@
-
 // User.ts
 export type Account = {
     _id: string;

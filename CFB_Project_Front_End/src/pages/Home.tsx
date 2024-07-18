@@ -61,15 +61,12 @@ const Home = () => {
                                 <p> <Link to="/contactus"  className="text-white h-6 cursor-pointer">Support</Link></p>
                                 <p className="text-white h-6  cursor-pointer">Mortgage</p>
                             </div>
-                           
                         </div>
-                       
-                    </div>
+                       </div>
                     </div>
                 </div>
                 </div>
             </main>
-
         </div>
     );
 };
