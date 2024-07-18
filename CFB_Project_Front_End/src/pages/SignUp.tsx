@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 //import general reusable input componnent
 import GeneralInput from "../components/GeneralInput";
+import axios from "axios";
 
 const SignUp = () => {
 
@@ -20,6 +21,7 @@ const SignUp = () => {
     const [agree, setAgree] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [message, setMessage] = useState('');
+    const [showModal, setShowModal] = useState(false); // State to manage modal visibility
 
     //create array of provinces here to make it easy to read
     const provinces = [
@@ -40,7 +42,7 @@ const SignUp = () => {
     const regEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     //submittion functions with all validations
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         let valid = true;
         const newErrors: { [key: string]: string } = {};
@@ -96,9 +98,58 @@ const SignUp = () => {
             setErrors(newErrors);
             return;
         }
+        try {
+            // Make API call to register endpoint
+            const response = await axios.post("http://localhost:5000/api/register", {
+                firstName,
+                lastName,
+                email,
+                phone,
+                unitNumber,
+                streetAddress,
+                city,
+                province,
+                postalCode,
+                password,
+            });
 
-        //resetting all the fields
-        alert('Thank you for signing up! This is just a demo :)');
+            console.log(response.data); // Log the response from backend
+            setMessage("Registration successful!");
+            setShowModal(true); // Show the modal
+            resetForm();
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                // Axios-specific error handling
+                if (error.response && error.response.data) {
+                    setMessage(error.response.data.message);
+                } else {
+                    setMessage("Something went wrong. Please try again later.");
+                }
+            } else {
+                // Generic error handling
+                setMessage("An unexpected error occurred. Please try again later.");
+            }
+        }
+        // //resetting all the fields
+        // alert('Thank you for signing up! This is just a demo :)');
+        // setFirstName('');
+        // setLastName('');
+        // setEmail('');
+        // setPhone('');
+        // setUnitNumber('');
+        // setStreetAddress('');
+        // setCity('');
+        // setProvince('');
+        // setPostalCode('');
+        // setPassword('');
+        // setConfirmPassword('');
+        // setAgree(false);
+        // setErrors({});
+        // setMessage('');
+    }
+
+    // Function to reset form fields and state
+    const resetForm = () => {
         setFirstName('');
         setLastName('');
         setEmail('');
@@ -112,8 +163,7 @@ const SignUp = () => {
         setConfirmPassword('');
         setAgree(false);
         setErrors({});
-        setMessage('');
-    }
+    };
 
     // Helper function to get error message for a field
     const getErrorMessage = (field: string) => {
@@ -211,6 +261,16 @@ const SignUp = () => {
                 </div>
                 <button type="submit" className='mt-4 my-2 bg-blue-700 text-white w-full p-2 hover:bg-blue-900 transition-colors duration-200'>Sign Up</button>
             </form>
+            {/* Modal for success message */}
+            {showModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <div className="bg-white p-4 rounded-lg shadow-md max-w-sm">
+                        <h2 className="text-xl font-bold mb-4">Registration Successful!</h2>
+                        <p className="mb-4">{message}</p>
+                        <Link to="/login" className="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-900 transition-colors duration-200">Go to Login</Link>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
