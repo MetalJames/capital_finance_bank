@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 require('dotenv').config();
+const authRoutes = require('./routes/authRoutes'); // Import your auth routes
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -29,10 +30,14 @@ async function connectDB() {
 
 connectDB();
 
+// Mount authRoutes under /api
+app.use('/api', authRoutes);
+
+// Sample endpoint to fetch users (you can remove this if not needed)
 app.get('/', async (req, res) => {
     try {
         const database = client.db('sample_mflix'); // replace with your database name
-        const collection = database.collection('users'); // replace with your collection name
+        const collection = database.collection('bankData'); // replace with your collection name
         const users = await collection.find({}).toArray();
         res.json(users);
     } catch (err) {

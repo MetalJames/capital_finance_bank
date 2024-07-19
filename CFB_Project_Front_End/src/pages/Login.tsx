@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom";
 import GeneralInput from "../components/GeneralInput";
+import axios from "axios";
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -38,7 +39,7 @@ const Login = () => {
         setCaptchaInput(e.target.value)
     }
 
-    const handleSubmit = (e: { preventDefault: () => void; }) => {
+    const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
 
         if (email === '') {
@@ -56,16 +57,53 @@ const Login = () => {
             setMessage('Captcha is incorrect. Try again.');
             generateCaptcha();
         } else {
-            setCaptchaError(false);
-            alert('Thank you! This is just a demo :)');
-            setEmail('');
-            setPassword('');
-            setRememberMe(false);
-            setErrorEmail(false);
-            setErrorPassword(false);
-            setMessage('');
-            generateCaptcha();
+            try {
+                // Make API call to login endpoint
+                const response = await axios.post("http://localhost:5000/api/login", {
+                email,
+                password,
+                });
+                console.log(response.data); // Log the response from backend
+                // Handle successful login (redirect or state update)
+                setErrorEmail(false);
+                setErrorPassword(false);
+                setMessage("");
+                generateCaptcha();
+                alert("Login successful!");
+                // Example: Redirect to a new page after successful login
+                window.location.href = "/myaccount";
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    setErrorEmail(false);
+                    setErrorPassword(false);
+                    setMessage("An unexpected error occurred. Please try again later.");
+                    generateCaptcha();
+                } else if (axios.isAxiosError(error)) {
+                    if (error.response && error.response.data) {
+                        setErrorEmail(false);
+                        setErrorPassword(false);
+                        setMessage(error.response.data.message);
+                        generateCaptcha();
+                    } else {
+                        setErrorEmail(false);
+                        setErrorPassword(false);
+                        setMessage("Something went wrong. Please try again later.");
+                        generateCaptcha();
+                    }
+                }
+            }
         }
+        // } else {
+        //     setCaptchaError(false);
+        //     alert('Thank you! This is just a demo :)');
+        //     setEmail('');
+        //     setPassword('');
+        //     setRememberMe(false);
+        //     setErrorEmail(false);
+        //     setErrorPassword(false);
+        //     setMessage('');
+        //     generateCaptcha();
+        // }
     }
 
     return (
