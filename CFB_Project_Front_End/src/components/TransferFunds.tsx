@@ -43,12 +43,13 @@ const TransferFunds = () => {
 
         try {
             const response = await axiosInstance.post('/transfer', { 
+                email: user?.email,
                 fromAccountNumber: transferData.fromAccountNumber, 
                 toAccountNumber: transferData.toAccountNumber, 
                 amount
             });
             // Refresh user data after successful transfer
-            refreshUserData();
+            refreshUserData(user!.email);
             console.log(response.data); // Handle success response
             setTransferData({
                 fromAccountNumber: '',
@@ -87,6 +88,8 @@ const TransferFunds = () => {
     console.log(transferData.fromAccountNumber);
     console.log(transferData.toAccountNumber);
     console.log(transferData.amount);
+
+    if (!user?.accounts) return <h1>No Activities.</h1>;
 
     return (
         <div>

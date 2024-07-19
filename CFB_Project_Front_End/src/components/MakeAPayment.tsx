@@ -35,11 +35,12 @@ const MakeAPayment = () => {
 
         try {
             const response = await axiosInstance.post('/activity', { 
+                email: user?.email,
                 fromAccountNumber: activity.fromAccountNumber, 
                 amount: amount, // Correctly passing the amount from state
                 description: activity.description
             });
-            refreshUserData();
+            refreshUserData(user!.email);
             console.log(response.data);
             setActivity({
                 fromAccountNumber: '',
@@ -68,6 +69,8 @@ const MakeAPayment = () => {
         const { name, value } = e.target;
         setActivity({ ...activity, [name]: name === 'amount' ? value : value }); // Adjusted for 'amount' name
     };
+
+    if (!user?.accounts) return <h1>No Activities.</h1>;
 
     return (
         <div>

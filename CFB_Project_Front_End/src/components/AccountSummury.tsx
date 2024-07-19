@@ -13,6 +13,9 @@ type Props = {
 };
 
 const AccountSummary: React.FC<Props> = ({ accounts }) => {
+
+    if (!accounts) return <h1>No Activities.</h1>;
+
     return (
         <div className="border border-gray-300 p-4 rounded-md">
             <h2 className="text-lg font-semibold mb-2">Account Summary</h2>
