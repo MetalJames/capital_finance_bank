@@ -10,6 +10,9 @@ type Props = {
 };
 
 const TransactionHistory = ({ transactions }: Props) => {
+
+    if (!transactions) return <h1>No Transactions</h1>;
+
     return (
         <div className="mt-4 border border-gray-300 p-4 rounded-md">
             <h2 className="text-lg font-semibold mb-2">Transaction History</h2>
