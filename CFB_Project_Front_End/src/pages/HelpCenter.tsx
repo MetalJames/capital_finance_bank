@@ -62,7 +62,7 @@ const HelpCenter = () => {
                 <div className="h-40 bg-[#EADBC8] py-6 p-6">
              
                 <div className="bg-white shadow rounded-lg w-45 h-10">
-                <p className="text-gray-900 p-1 text-center font-bold text-2xl ">Helpful Links</p>
+                <h2 className="text-gray-900 p-1 text-center font-bold text-2xl ">Helpful Links</h2>
                 </div>
                 <div className = "grid grid-cols-4 sm:grid-cols-4 lg:grid-cols-4 gap-8 sm:px-10 lg:px-10 p-4">
                 <div className="  flex-shrink-0 rounded-lg sm:px-5 lg:px-10">
