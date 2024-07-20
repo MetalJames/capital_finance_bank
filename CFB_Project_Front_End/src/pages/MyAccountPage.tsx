@@ -32,7 +32,7 @@ const MyAccountPage: React.FC = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="border-1 border-dashed bg-[#EADBC8] rounded-lg py-48">
+                        
                         {/* {isLoggedIn ? (
                             <div className="grid grid-cols-1 gap-4">
                             <PersonalDetails name={name} email={email} phone={phone} address={address} />
@@ -50,7 +50,8 @@ const MyAccountPage: React.FC = () => {
 
 
                         {user ? (
-                        <div className="grid grid-cols-1 gap-4">
+                        <div className="border-1 border-dashed bg-[#EADBC8] rounded-lg">
+                        <div className="grid grid-cols-1 gap-3">
                             <PersonalDetails 
                                 name={`${user.firstName} ${user.lastName}`}
                                 email={user.email}
@@ -63,13 +64,16 @@ const MyAccountPage: React.FC = () => {
                             <TransferFunds />
                             <MakeAPayment />
                         </div>
+                        </div>
                         ) : (
+                        <div className="border-1 border-dashed bg-[#EADBC8] rounded-lg py-48">
                         <div className="text-center">
                             <p className="mb-4">You are not logged in. Please log in to view your account.</p>
                             <Link to="/login" className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded inline-block">Log In</Link>
                         </div>
-                        )}
                         </div>
+                        )}
+                        
                     </div>
                 </div>
             </main>

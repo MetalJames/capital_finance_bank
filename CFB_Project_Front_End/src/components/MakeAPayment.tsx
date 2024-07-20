@@ -35,11 +35,12 @@ const MakeAPayment = () => {
 
         try {
             const response = await axiosInstance.post('/activity', { 
+                email: user?.email,
                 fromAccountNumber: activity.fromAccountNumber, 
                 amount: amount, // Correctly passing the amount from state
                 description: activity.description
             });
-            refreshUserData();
+            refreshUserData(user!.email);
             console.log(response.data);
             setActivity({
                 fromAccountNumber: '',
@@ -69,10 +70,12 @@ const MakeAPayment = () => {
         setActivity({ ...activity, [name]: name === 'amount' ? value : value }); // Adjusted for 'amount' name
     };
 
+    if (!user?.accounts) return <h1>No Activities.</h1>;
+
     return (
         <div>
-            <div>
-                <h2>Pay Your Bill</h2>
+            <div className="mt-4 border border-gray-300 p-4 rounded-md">
+                <h2 className="text-lg font-semibold mb-2">Pay Your Bill</h2>
                 <div>
                     <label htmlFor="fromAccountNumber">From Account:</label>
                     <select 
@@ -109,7 +112,7 @@ const MakeAPayment = () => {
                         onChange={handleChangeActivity}
                     />
                 </div>
-                <button onClick={handleActivity}>Pay</button>
+                <button onClick={handleActivity}  className="bg-[#102C57] text-white px-4 py-2 rounded-md hover:bg-blue-900 transition-colors duration-200">Pay</button>
 
                 {/* Modal for error message */}
                 {showModal && (
