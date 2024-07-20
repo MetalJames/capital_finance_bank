@@ -61,18 +61,12 @@ const Home = () => {
                                 <p> <Link to="/contactus"  className="text-white h-6 cursor-pointer">Support</Link></p>
                                 <p className="text-white h-6  cursor-pointer">Mortgage</p>
                             </div>
-                           
                         </div>
-                       
-                    </div>
+                       </div>
                     </div>
                 </div>
                 </div>
             </main>
-            <div className="flex-grow"></div>
-            <footer className="bg-[#102C57] py-4 text-white text-center">
-                © 2024 CFB. All rights reserved.
-            </footer>
         </div>
     );
 };
