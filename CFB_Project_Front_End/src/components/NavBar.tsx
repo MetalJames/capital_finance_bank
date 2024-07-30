@@ -47,6 +47,8 @@ const NavBar = () => {
                         </div>
                     </div>
                         <div className="hidden sm:ml-6 sm:flex sm:space-x-4">
+                        <Link to={"/support"}><p className={`${isActive("/support") ? "text-white border-b-2 border-white" : "text-gray-500 border-transparent"
+                                }"text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium`}>Support</p></Link>
                             <Link to={"/contactus"}><p className={`${isActive("/contactus") ? "text-white border-b-2 border-white" : "text-gray-500 border-transparent"
                                 }"text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium`}>Contact Us</p></Link>
                             {user ? (

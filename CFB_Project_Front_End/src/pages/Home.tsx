@@ -58,7 +58,7 @@ const Home = () => {
                             </div>
                             <div className="hidden sm:ml-8 sm:flex sm:space-x-28">
                                 <p><Link to="/login"  className="text-white h-6 w-12 cursor-pointer">Personal</Link></p>
-                                <p> <Link to="/contactus"  className="text-white h-6 cursor-pointer">Support</Link></p>
+                                <p> <Link to="/support"  className="text-white h-6 cursor-pointer">Support</Link></p>
                                 <p className="text-white h-6  cursor-pointer">Mortgage</p>
                             </div>
                         </div>
