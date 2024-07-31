@@ -74,19 +74,14 @@ const Login = () => {
                 setErrorPassword(false);
                 setMessage("");
                 generateCaptcha();
-                //alert("Login successful!");
-                // Example: Redirect to a new page after successful login
-                // Assuming response.data contains user information
-                // setUser(response.data.user); // Update UserContext with logged-in user data
-                // navigate("/myaccount");
-                                // Show modal and set message
+                // Show modal and set message
                 setShowModal(true);
                 setModalMessage("Welcome! Logging you in...");
 
                 // Redirect after 1.5 seconds
                 setTimeout(() => {
                     setUser(response.data.user); // Update UserContext with logged-in user data
-                    navigate("/myaccount");
+                    navigate("/myaccount/personal_details");
                     setShowModal(false);
                 }, 1500);
             } catch (error: unknown) {
@@ -110,18 +105,7 @@ const Login = () => {
                 }
             }
         }
-        // } else {
-        //     setCaptchaError(false);
-        //     alert('Thank you! This is just a demo :)');
-        //     setEmail('');
-        //     setPassword('');
-        //     setRememberMe(false);
-        //     setErrorEmail(false);
-        //     setErrorPassword(false);
-        //     setMessage('');
-        //     generateCaptcha();
-        // }
-    }
+    };
 
     return (
         <div className="flex flex-col justify-center items-center h-screen">

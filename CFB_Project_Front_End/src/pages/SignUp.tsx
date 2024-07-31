@@ -130,23 +130,7 @@ const SignUp = () => {
                 setMessage("An unexpected error occurred. Please try again later.");
             }
         }
-        // //resetting all the fields
-        // alert('Thank you for signing up! This is just a demo :)');
-        // setFirstName('');
-        // setLastName('');
-        // setEmail('');
-        // setPhone('');
-        // setUnitNumber('');
-        // setStreetAddress('');
-        // setCity('');
-        // setProvince('');
-        // setPostalCode('');
-        // setPassword('');
-        // setConfirmPassword('');
-        // setAgree(false);
-        // setErrors({});
-        // setMessage('');
-    }
+    };
 
     // Function to reset form fields and state
     const resetForm = () => {

@@ -1,8 +1,4 @@
-type Activity = {
-    id: number;
-    date: string;
-    description: string;
-};
+import { Activity } from "../types/type";
 
 type Props = {
     activities: Activity[];

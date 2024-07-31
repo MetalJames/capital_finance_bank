@@ -121,6 +121,66 @@ router.post('/register', async (req, res) => {
     }
 });
 
+// PUT /api/updateUser:email route
+router.put('/user/:email', async (req, res) => {
+    const { email } = req.params;
+    const { firstName, lastName, phone, unitNumber, streetAddress, city, province, postalCode, password } = req.body;
+
+    try {
+        const database = client.db('sample_mflix');
+        const collection = database.collection('bankData');
+
+        const user = await collection.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const updatedUser = {
+            firstName: firstName || user.firstName,
+            lastName: lastName || user.lastName,
+            phone: phone || user.phone,
+            unitNumber: unitNumber || user.unitNumber,
+            streetAddress: streetAddress || user.streetAddress,
+            city: city || user.city,
+            province: province || user.province,
+            postalCode: postalCode || user.postalCode,
+            password: password || user.password
+        };
+
+        await collection.updateOne(
+            { email: email },
+            { $set: updatedUser }
+        );
+
+        res.status(200).json({ message: 'User updated successfully', user: updatedUser });
+    } catch (err) {
+        console.error('Update user error:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// DELETE /api/deleteUser route
+router.delete('/deleteUser', async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const database = client.db('sample_mflix');
+        const collection = database.collection('bankData');
+
+        const result = await collection.deleteOne({ email });
+
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'User deleted successfully' });
+    } catch (err) {
+        console.error('Delete user error:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 /// POST /api/transfer route
 // router.post('/transfer', async (req, res) => {
 //     const { fromAccountNumber, toAccountNumber, amount } = req.body;
