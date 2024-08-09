@@ -1,7 +1,10 @@
 // Import necessary testing utilities
+import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom'; // Import BrowserRouter
 import SignUp from './SignUp';
+import { fireEvent } from '@testing-library/react';
+
 
 // Mock BrowserRouter in your test
 const renderWithRouter = (ui: React.ReactElement) => {
@@ -9,11 +12,11 @@ const renderWithRouter = (ui: React.ReactElement) => {
 };
 
 // Your test using the mocked BrowserRouter
-test('shows 11 textboxes , 1 button and 1 checkbox, 1 link', async () => {
+test('shows 1 heading, 1 button, 1 checkbox, 8 textbox, 11options', async () => {
   renderWithRouter(<SignUp />);
 
-  const input = await screen.findAllByRole('textbox');
-  expect(input).toHaveLength(11);
+  const titles = await screen.findAllByRole('heading');
+  expect(titles).toHaveLength(1);
 
   const button = await screen.findAllByRole('button');
   expect(button).toHaveLength(1);
@@ -21,7 +24,21 @@ test('shows 11 textboxes , 1 button and 1 checkbox, 1 link', async () => {
   const checkbox = await screen.findAllByRole('checkbox');
   expect(checkbox).toHaveLength(1);
 
-  const link = await screen.findAllByRole('link');
-  expect(link).toHaveLength(1);
+  const textbox = await screen.findAllByRole('textbox');
+  expect(textbox).toHaveLength(8);
 
+  const option = await screen.getAllByRole('option');
+  expect(option).toHaveLength(11);
 });
+
+test('should navigate to Login Page when link is clicked', () => {
+    renderWithRouter(<SignUp />);
+  
+    const link = screen.getByText('Please Login');
+  
+    fireEvent.click(link);
+ 
+    expect(link.getAttribute('href')).toBe('/login');
+        
+  });
+  

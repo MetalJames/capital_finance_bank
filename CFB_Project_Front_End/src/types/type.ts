@@ -1,4 +1,10 @@
-// User.ts
+
+export type  UserContextType = {
+  user: User | null;
+  setUser: (user: User | null) => void;
+  refreshUserData: () => void;
+}
+
 export type Account = {
     _id: string;
     accountNumber: string;
@@ -21,7 +27,7 @@ export type Activity = {
 }
 
 export type User = {
-    id: string;
+    id: number;
     firstName: string;
     lastName: string;
     email: string;
@@ -36,3 +42,4 @@ export type User = {
     transactions: Transaction[];
     activities: Activity[];
 }
+

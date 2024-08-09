@@ -1,5 +1,5 @@
 import { NavBar, Footer } from "./components";
-import { AboutUs, ContactUs, Home, Login, MyAccountPage, SignUp } from "./pages";
+import { AboutUs, HelpCenter, Home, Login, MyAccountPage, SignUp } from "./pages";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
 

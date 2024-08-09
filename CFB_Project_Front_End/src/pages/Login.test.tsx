@@ -12,7 +12,7 @@ const renderWithRouter = (ui: React.ReactElement) => {
 };
 
 // Your test using the mocked BrowserRouter
-test('shows 1 heading', async () => {
+test('shows 1 heading, 1 button, 1 checkbox and 2 textbox', async () => {
   renderWithRouter(<Login />);
 
   const titles = await screen.findAllByRole('heading');
@@ -31,7 +31,7 @@ test('shows 1 heading', async () => {
 test('should navigate to ... when link is clicked', () => {
     renderWithRouter(<Login />);
   
-    const link = screen.getByText('Sign Up');
+    const link = screen.getByText('New User? Please Sign Up');
   
     fireEvent.click(link);
  

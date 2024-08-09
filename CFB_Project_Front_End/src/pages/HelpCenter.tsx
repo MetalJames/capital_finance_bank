@@ -1,4 +1,4 @@
-
+import { Link,  } from "react-router-dom"
 import image from "../assets/You are welcome image.png";
 import truck from "../assets/truck logo.png";
 import myAccount from "../assets/My Account.png";
@@ -70,8 +70,8 @@ const HelpCenter = () => {
                 <p className = "text-gray-900 px-1  cursor-pointer">Payment and Transfer</p>
                     </div>
                     <div className="  flex-shrink-0 rounded-lg sm:px-5 lg:px-10">
-                <img className="h-30 w-40 rounded-lg  cursor-pointer" src={myAccount} alt="My Account"/>
-                <p className = "text-gray-900 px-8  cursor-pointer">My Account</p>
+                    <Link to={"/myaccount"}><img className="h-30 w-40 rounded-lg  cursor-pointer" src={myAccount} alt="My Account"/>
+                <p className = "text-gray-900 px-8  cursor-pointer">My Account</p></Link>
                     </div>
                       <div className="  flex-shrink-0 rounded-lg sm:px-5 lg:px-10">
                 <img className="h-30 w-40 rounded-lg  cursor-pointer" src={ratesAndCurrency} alt="Rates And Currency"/>
@@ -88,9 +88,7 @@ const HelpCenter = () => {
                 </div> 
              </main>
              <div className="flex-grow"></div>
-            <footer className="bg-[#102C57] py-4 text-white text-center">
-                © 2024 CFB. All rights reserved.
-            </footer>
+          
         </div>
     )
 }
