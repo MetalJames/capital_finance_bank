@@ -43,7 +43,6 @@ router.post('/login', async (req, res) => {
 
         // Successful login
         req.session.user = user; // Store user data in session
-
         res.status(200).json({ message: 'Login successful', user });
     } catch (err) {
         console.error('Login error:', err);
@@ -69,7 +68,6 @@ router.post('/register', async (req, res) => {
 
         // Create a new user
         const newUser = new User ({
-        const newUser = {
             firstName,
             lastName,
             email,
@@ -111,7 +109,6 @@ router.post('/register', async (req, res) => {
                 { id: 3, date: "2023-06-03", description: "Changed password" },
             ],
         });
-        };
 
         // Insert the new user into the collection
         await collection.insertOne(newUser);
@@ -532,5 +529,4 @@ router.get('/user', async (req, res) => {
     }
 });
 
-module.exports = router;
 module.exports = router;

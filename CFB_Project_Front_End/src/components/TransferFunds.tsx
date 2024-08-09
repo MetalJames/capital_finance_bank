@@ -94,8 +94,8 @@ const TransferFunds = () => {
     if (!user?.accounts) return <h1>No Activities.</h1>;
 
     return (
-        <div className="mt-4 border border-gray-300 p-4 rounded-md">
-            <h2 className="text-lg font-semibold mb-2">Transfer Funds</h2>
+        <div>
+            <h2>Transfer Funds</h2>
             <div>
                 <label htmlFor="fromAccountNumber">From Account:</label>
                 <select 
@@ -135,7 +135,7 @@ const TransferFunds = () => {
                     placeholder="Enter Amount"
                 />
             </div>
-            <button onClick={handleTransfer} className="bg-[#102C57] text-white px-4 py-2 rounded-md hover:bg-blue-900 transition-colors duration-200" >Transfer</button>
+            <button onClick={handleTransfer} className="bg-[#102C57] text-white px-4 py-2 rounded-md hover:bg-blue-900 transition-colors duration-200">Transfer</button>
 
             {/* Modal for error message */}
             {showModal && (
@@ -143,7 +143,7 @@ const TransferFunds = () => {
                     <div className="bg-white p-4 rounded-lg shadow-md max-w-sm">
                         <h2 className="text-xl font-bold mb-4">Error</h2>
                         <p className="mb-4">{message}</p>
-                        <button onClick={() => setShowModal(false)} className="bg-[#102C57] text-white px-4 py-2 rounded-md hover:bg-blue-900 transition-colors duration-200">Close</button>
+                        <button onClick={() => setShowModal(false)} className="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-900 transition-colors duration-200">Close</button>
                     </div>
                 </div>
             )}

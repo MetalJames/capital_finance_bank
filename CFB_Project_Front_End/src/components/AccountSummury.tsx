@@ -4,10 +4,10 @@ type AccountProps = {
     accounts: Account[];
 };
 
-const AccountSummary = ({ accounts } : AccountProps) => {
+const AccountSummary = ({ accounts }: AccountProps) => {
 
     if (!accounts) return <h1>No Activities.</h1>;
-    
+
     return (
         <div className="border border-gray-300 p-4 rounded-md">
             <h2 className="text-lg font-semibold mb-2">Account Summary</h2>
@@ -20,7 +20,7 @@ const AccountSummary = ({ accounts } : AccountProps) => {
                         <span className="font-semibold">Account Number:</span> {account.accountNumber}
                     </p>
                     <p>
-                        <span className="font-semibold">Balance:</span> ${account.balance}
+                        <span className="font-semibold">Balance:</span> ${account.balance.toFixed(2)}
                     </p>
                     <p>
                         <span className="font-semibold">Open Date:</span> {account.openDate}

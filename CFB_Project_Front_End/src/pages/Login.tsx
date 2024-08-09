@@ -4,7 +4,6 @@ import GeneralInput from "../components/GeneralInput";
 import axios from "axios";
 import UserContext from "../context/UserContext";
 
-
 const Login = () => {
     const navigate = useNavigate();
     const { setUser } = useContext(UserContext);
@@ -75,7 +74,6 @@ const Login = () => {
                 setErrorPassword(false);
                 setMessage("");
                 generateCaptcha();
-
                 // Show modal and set message
                 setShowModal(true);
                 setModalMessage("Welcome! Logging you in...");
@@ -86,11 +84,6 @@ const Login = () => {
                     navigate("/myaccount/personal_details");
                     setShowModal(false);
                 }, 1500);
-
-                alert("Login successful!");
-                // Example: Redirect to a new page after successful login
-                window.location.href = "/myaccount";
-
             } catch (error: unknown) {
                 if (error instanceof Error) {
                     setErrorEmail(false);
@@ -112,7 +105,6 @@ const Login = () => {
                 }
             }
         }
-
     };
 
     return (
