@@ -89,6 +89,8 @@ const TransferFunds = () => {
     console.log(transferData.toAccountNumber);
     console.log(transferData.amount);
 
+    const formattedAmount = parseFloat(transferData.amount).toFixed(2);
+
     if (!user?.accounts) return <h1>No Activities.</h1>;
 
     return (
@@ -128,7 +130,7 @@ const TransferFunds = () => {
                     type="number"
                     id="amount"
                     name="amount"
-                    value={transferData.amount}
+                    value={formattedAmount}
                     onChange={handleChange}
                     placeholder="Enter Amount"
                 />

@@ -1,11 +1,17 @@
 import axios from "axios";
 import React, { useState } from "react";
 import UpdateDetailsModal from "./UpdateDetailsModal";
+import SuccessModal from "./SuccessModal";
 import { PersonalDetailsProps } from "../types/type";
+import { useNavigate } from "react-router-dom";
+import useUserContext from "../hooks/useUserContext";
+import AccountDeletionModal from "./AccountDeletionModal";
 
 const PersonalDetails = ({ firstName, lastName, email, phone, unitNumber, streetAddress, city, province, postalCode, updateUser }: PersonalDetailsProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+    const [isAccountDeletionModalOpen, setIsAccountDeletionModalOpen] = useState(false);
+
     const [formData, setFormData] = useState({
         firstName: firstName || '',
         lastName: lastName || '',
@@ -18,13 +24,21 @@ const PersonalDetails = ({ firstName, lastName, email, phone, unitNumber, street
         postalCode: postalCode || '',
     });
 
+    const navigate = useNavigate();
+    const { setUser } = useUserContext();
+
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [message, setMessage] = useState('');
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
-    const openSuccessModal = () => setIsSuccessModalOpen(true);
+    const openSuccessModal = (msg: string) => {
+        setMessage(msg);
+        setIsSuccessModalOpen(true);
+    };
     const closeSuccessModal = () => setIsSuccessModalOpen(false);
+    const openAccountDeletionModal = () => setIsAccountDeletionModalOpen(true);
+    const closeAccountDeletionModal = () => setIsAccountDeletionModalOpen(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -89,12 +103,28 @@ const PersonalDetails = ({ firstName, lastName, email, phone, unitNumber, street
             await axios.put(`http://localhost:5000/api/user/${encodeURIComponent(email)}`, updatedData);
             updateUser(email);
             closeModal();
-            openSuccessModal();
+            openSuccessModal("Your details have been updated successfully!");
         } catch (error) {
             console.error('Error updating user data:', error);
             setMessage("An error occurred while updating your details. Please try again.");
         }
     };
+
+        const handleDeleteUser = async () => {
+            try {
+                await axios.delete(`http://localhost:5000/api/user/${encodeURIComponent(email)}`);
+                openSuccessModal("Your account was successfully deleted.");
+            } catch (error) {
+                console.error('Error deleting user:', error);
+                setMessage("An error occurred while deleting your account. Please try again.");
+            }
+        };
+
+        const handleAccountDeletionCompletion = () => {
+            closeAccountDeletionModal();
+            setUser(null);
+            navigate("/");
+        };
 
     const getErrorMessage = (field: string): JSX.Element | null => {
         if (errors[field]) {
@@ -120,6 +150,7 @@ const PersonalDetails = ({ firstName, lastName, email, phone, unitNumber, street
             </p>
             <div className="mt-4">
                 <button className="mr-2 px-4 py-2 bg-blue-500 text-white rounded" onClick={openModal}>Update</button>
+                <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 ml-2" onClick={openAccountDeletionModal}>Delete Account</button>
             </div>
             {isModalOpen && (
                 <UpdateDetailsModal
@@ -133,13 +164,18 @@ const PersonalDetails = ({ firstName, lastName, email, phone, unitNumber, street
                 />
             )}
             {isSuccessModalOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-white p-6 rounded-md w-full max-w-lg">
-                        <h3 className="text-lg font-semibold mb-4">Success</h3>
-                        <p className="text-green-600">Your details have been updated successfully!</p>
-                        <button onClick={closeSuccessModal} className="mt-4 bg-blue-500 text-white p-2 rounded hover:bg-blue-700 transition-colors duration-200">OK</button>
-                    </div>
-                </div>
+                <SuccessModal
+                    isOpen={isSuccessModalOpen}
+                    message={message}
+                    onClose={closeSuccessModal}
+                />
+            )}
+            {isAccountDeletionModalOpen && (
+                <AccountDeletionModal 
+                    onClose={closeAccountDeletionModal} 
+                    handleDelete={handleDeleteUser} 
+                    onCompletion={handleAccountDeletionCompletion} 
+                />
             )}
         </div>
     );

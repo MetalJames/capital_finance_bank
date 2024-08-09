@@ -121,6 +121,29 @@ router.post('/register', async (req, res) => {
     }
 });
 
+// Forgot Password
+router.get('/forgot-password', async (req, res) => {
+    const { email } = req.query;
+    if (!email) {
+        return res.status(400).json({ error: 'Email query parameter is required' });
+    }
+
+    try {
+        const database = client.db('sample_mflix');
+        const collection = database.collection('bankData');
+        const users = await collection.find({}).toArray();
+        const user = users.find(user => user.email === email);
+
+        if (user) {
+            res.json({ password: user.password });
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
 // PUT /api/updateUser:email route
 router.put('/user/:email', async (req, res) => {
     const { email } = req.params;
@@ -161,8 +184,8 @@ router.put('/user/:email', async (req, res) => {
 });
 
 // DELETE /api/deleteUser route
-router.delete('/deleteUser', async (req, res) => {
-    const { email } = req.body;
+router.delete('/user/:email', async (req, res) => {
+    const { email } = req.params;
 
     try {
         const database = client.db('sample_mflix');
@@ -174,7 +197,16 @@ router.delete('/deleteUser', async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        res.status(200).json({ message: 'User deleted successfully' });
+        // Destroy session after deletion
+        req.session.destroy(err => {
+            if (err) {
+                return res.status(500).json({ message: 'Failed to clear session' });
+            }
+
+            res.status(200).json({ message: 'User deleted and session cleared' });
+        });
+
+        //res.status(200).json({ message: 'User deleted successfully' });
     } catch (err) {
         console.error('Delete user error:', err);
         res.status(500).json({ message: 'Internal server error' });
@@ -496,9 +528,5 @@ router.get('/user', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
-
-
-
-
 
 module.exports = router;

@@ -20,7 +20,7 @@ const AccountSummary = ({ accounts }: AccountProps) => {
                         <span className="font-semibold">Account Number:</span> {account.accountNumber}
                     </p>
                     <p>
-                        <span className="font-semibold">Balance:</span> ${account.balance}
+                        <span className="font-semibold">Balance:</span> ${account.balance.toFixed(2)}
                     </p>
                     <p>
                         <span className="font-semibold">Open Date:</span> {account.openDate}

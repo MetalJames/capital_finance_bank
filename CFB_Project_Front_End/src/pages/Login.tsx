@@ -130,7 +130,7 @@ const Login = () => {
                         <input type="checkbox" checked={rememberMe} className="mr-2" onChange={() => setRememberMe(!rememberMe)} />
                         <label>Remember Me</label>
                     </div>
-                    <a href="#" className="text-sky-400 cursor-pointer">Forgot your password?</a>
+                    <Link to="/forgot-password" className="text-sky-400 cursor-pointer">Forgot your password?</Link>
                 </div>
                 <div className="mb-4">
                     <label>Enter the sum of {captchaNum1} + {captchaNum2}:</label>
