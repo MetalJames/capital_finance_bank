@@ -94,8 +94,8 @@ const TransferFunds = () => {
     if (!user?.accounts) return <h1>No Activities.</h1>;
 
     return (
-        <div className="mt-4 border border-gray-300 p-4 rounded-md">
-            <h2 className="text-lg font-semibold mb-2">Transfer Funds</h2>
+        <div className="mt-5c border border-gray-300  bg-[#EADBC8] p-5 rounded-md">
+            <h2 className="text-lg font-bold mb-2">Transfer Funds</h2>
             <div>
                 <label htmlFor="fromAccountNumber">From Account:</label>
                 <select 
@@ -135,7 +135,7 @@ const TransferFunds = () => {
                     placeholder="Enter Amount"
                 />
             </div>
-            <button onClick={handleTransfer} className="bg-[#102C57] text-white px-4 py-2 rounded-md hover:bg-blue-900 transition-colors duration-200" >Transfer</button>
+            <button onClick={handleTransfer} className="bg-[#102C57] mt-6 text-white px-4 py-2 rounded-md hover:bg-blue-900 transition-colors duration-200" >Transfer</button>
 
             {/* Modal for error message */}
             {showModal && (

@@ -74,8 +74,8 @@ const MakeAPayment = () => {
 
     return (
         <div>
-            <div className="mt-4 border border-gray-300 p-4 rounded-md">
-                <h2 className="text-lg font-semibold mb-2">Pay Your Bill</h2>
+            <div className="mt-4 border border-gray-300   bg-[#EADBC8] p-4 rounded-md">
+                <h2 className="text-lg font-bold mb-2">Pay Your Bill</h2>
                 <div>
                     <label htmlFor="fromAccountNumber">From Account:</label>
                     <select 
@@ -112,7 +112,7 @@ const MakeAPayment = () => {
                         onChange={handleChangeActivity}
                     />
                 </div>
-                <button onClick={handleActivity}  className="bg-[#102C57] text-white px-4 py-2 rounded-md hover:bg-blue-900 transition-colors duration-200">Pay</button>
+                <button onClick={handleActivity}  className="bg-[#102C57] text-white mt-4 px-4 py-2 rounded-md hover:bg-blue-900 transition-colors duration-200">Pay</button>
 
                 {/* Modal for error message */}
                 {showModal && (

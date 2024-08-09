@@ -21,41 +21,38 @@ const MyAccountPage = () => {
             <main className="flex-grow">
                 <div className="max-w-7xl mx-auto sm:px-8 lg:px-8">
                     <div className="px-0 sm:px-0">
-                        <div className="border-1 border-dashed bg-[#102C57] rounded-lg py-4">
-                            <div className="max-w-9xl mx-auto px-6 sm:px-6 lg:px-8 flex justify-between items-center  ">
-                                <p className="text-2xl font-bold text-white">My Account</p>
-                                <div className="flex-shrink-0">
-                                    <img className="h-12 w-12 " src={person_image} alt="Person Image"/>
-                                </div>
-                            </div>
-                        </div>
                         {user ? (
-                        <div className="border-1 border-dashed bg-[#EADBC8] rounded-lg">
-                        <div className="grid grid-cols-1 gap-3">
-                        <header>
-                            <MyAccountNavBar />
-                        </header>
-                        <Routes>
-                            <Route path="personal_details" element={<PersonalDetails
-                                firstName={user.firstName} 
-                                lastName={user.lastName}
-                                email={user.email}
-                                phone={user.phone}
-                                unitNumber={user.unitNumber ? user.unitNumber : ""}
-                                streetAddress={user.streetAddress}
-                                city={user.city}
-                                province={user.province}
-                                postalCode={user.postalCode}
-                                updateUser={refreshUserData}
-                            />} />
-                            <Route path="transaction_history" element={<TransactionHistory transactions={user.transactions} />} />
-                            <Route path="account_summary" element={<AccountSummary accounts={user.accounts} />} />
-                            <Route path="recent_activities" element={<RecentActivities activities={user.activities} />} />
-                            <Route path="transfer_funds" element={<TransferFunds />} />
-                            <Route path="make_a_payment" element={<MakeAPayment />} />
-                        </Routes>
-                        </div>
-                        </div>
+                            <div className="grid grid-cols-1 gap-5">
+                                <header>
+                                <div className="border-1 border-dashed bg-[#102C57] rounded-lg py-2">
+                                <div className="max-w-9xl mx-auto px-6 sm:px-6 lg:px-8 flex justify-between items-center  ">
+                                    <MyAccountNavBar />
+                                    <div className="flex-shrink-0">
+                                    <img className="h-12 w-12 " src={person_image} alt="Person Image"/>
+                                    </div>
+                                </div>
+                                </div>
+                                </header>
+                                <Routes>
+                                    <Route path="personal_details" element={<PersonalDetails
+                                        firstName={user.firstName} 
+                                        lastName={user.lastName}
+                                        email={user.email}
+                                        phone={user.phone}
+                                        unitNumber={user.unitNumber ? user.unitNumber : ""}
+                                        streetAddress={user.streetAddress}
+                                        city={user.city}
+                                        province={user.province}
+                                        postalCode={user.postalCode}
+                                        updateUser={refreshUserData}
+                                    />} />
+                                    <Route path="account_summary" element={<AccountSummary accounts={user.accounts} />} />
+                                    <Route path="transaction_history" element={<TransactionHistory transactions={user.transactions} />} />
+                                    <Route path="recent_activities" element={<RecentActivities activities={user.activities} />} />
+                                    <Route path="transfer_funds" element={<TransferFunds />} />
+                                    <Route path="make_a_payment" element={<MakeAPayment />} />
+                                </Routes>
+                                </div>                        
                         ) : (
                         <div className="border-1 border-dashed bg-[#EADBC8] rounded-lg py-48">
                         <div className="text-center">
