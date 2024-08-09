@@ -134,8 +134,9 @@ const PersonalDetails = ({ firstName, lastName, email, phone, unitNumber, street
     };
 
     return (
-        <div className="border border-gray-300 p-4 rounded-md">
-            <h2 className="text-lg font-semibold mb-2">Personal Details</h2>
+       
+        <div  className=" mt-6 border border-gray-300 bg-[#EADBC8]  p-6 rounded-md">
+            <h2 className="text-lg font-bold mb-2">Personal Details</h2>
             <p>
                 <span className="font-semibold">Name:</span> {firstName} {lastName}
             </p>
@@ -148,7 +149,7 @@ const PersonalDetails = ({ firstName, lastName, email, phone, unitNumber, street
             <p>
                 <span className="font-semibold">Address:</span> {`${unitNumber ? unitNumber + ", " : ""}${streetAddress}, ${city}, ${province}, ${postalCode}`}
             </p>
-            <div className="mt-4">
+            <div className="mt-16">
                 <button className="mr-2 px-4 py-2 bg-blue-500 text-white rounded" onClick={openModal}>Update</button>
                 <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 ml-2" onClick={openAccountDeletionModal}>Delete Account</button>
             </div>
