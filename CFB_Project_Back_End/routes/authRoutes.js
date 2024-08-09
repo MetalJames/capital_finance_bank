@@ -213,69 +213,6 @@ router.delete('/user/:email', async (req, res) => {
     }
 });
 
-/// POST /api/transfer route
-// router.post('/transfer', async (req, res) => {
-//     const { fromAccountNumber, toAccountNumber, amount } = req.body;
-
-//     console.log('Transfer request received:', { fromAccountNumber, toAccountNumber, amount });
-
-//     try {
-//         const database = client.db('sample_mflix');
-//         const collection = database.collection('bankData');
-
-//         // Find the user by their email
-//         const user = await collection.findOne({ email: 'volodyaruzhak@gmail.com' });
-
-//         console.log('User found:', user); // Log user object to inspect accounts
-
-//         // Validate accounts and transfer amount
-//         const fromAccount = user.accounts.find(acc => acc.accountType === fromAccountNumber);
-//         const toAccount = user.accounts.find(acc => acc.accountType === toAccountNumber);
-
-//         if (!fromAccount || !toAccount) {
-//             console.error('Invalid account types');
-//             return res.status(400).json({ message: 'Invalid account types' });
-//         }
-
-//         const parsedAmount = parseFloat(amount);
-
-//         if (isNaN(parsedAmount) || fromAccount.balance < parsedAmount) {
-//             console.error('Insufficient funds or invalid amount');
-//             return res.status(400).json({ message: 'Insufficient funds or invalid amount' });
-//         }
-
-//         // Perform the transfer
-//         fromAccount.balance = Number(fromAccount.balance) - parsedAmount;
-//         toAccount.balance = Number(toAccount.balance) + parsedAmount;
-
-//         // Update the user's accounts in MongoDB
-//         await collection.updateOne(
-//             { email: 'volodyaruzhak@gmail.com' },
-//             { $set: { accounts: user.accounts } }
-//         );
-
-//         // Log the transaction (optional)
-//         const transaction = {
-//             id: user.transactions.length + 1,
-//             date: new Date().toISOString(),
-//             description: `Transfer from ${fromAccount.accountType} to ${toAccount.accountType}`,
-//             amount: -parsedAmount,
-//         };
-//         user.transactions.push(transaction);
-
-//         await collection.updateOne(
-//             { email: 'volodyaruzhak@gmail.com' },
-//             { $set: { transactions: user.transactions } }
-//         );
-
-//         console.log('Transfer successful:', transaction);
-//         res.status(200).json({ message: 'Transfer successful', transaction });
-//     } catch (err) {
-//         console.error('Transfer error:', err);
-//         res.status(500).json({ message: 'Internal server error' });
-//     }
-// });
-
 // POST /transfer route
 router.post('/transfer', async (req, res) => {
     const { email, fromAccountNumber, toAccountNumber, amount } = req.body;
@@ -325,9 +262,11 @@ router.post('/transfer', async (req, res) => {
         // Log the transaction (optional)
         const transaction = {
             id: user.transactions.length + 1,
-            date: new Date().toISOString(),
+            date: new Date().toISOString().replace('T', ' ').slice(0, 16), // This will format the date as YYYY-MM-DD HH:MM
             description: `Transfer from ${fromAccount.accountType} to ${toAccount.accountType}`,
             amount: -parsedAmount,
+            //this needed for filtering in the front end
+            accountType: fromAccountNumber,
         };
         user.transactions.push(transaction);
 
@@ -344,78 +283,57 @@ router.post('/transfer', async (req, res) => {
     }
 });
 
+// POST /deposit route
+router.post('/deposit', async (req, res) => {
+    console.log('Request body:', req.body);
+    const { email, accountType, amount } = req.body;
+    const depositAmount = parseFloat(amount);
 
-// POST /api/activity route
-// router.post('/activity', async (req, res) => {
-//     const { fromAccountNumber, amount, description } = req.body;
+    if (isNaN(depositAmount) || depositAmount <= 0) {
+        return res.status(400).json({ message: 'Invalid deposit amount.' });
+    }
 
-//     console.log('Payment request received:', { fromAccountNumber, amount, description });
+    if (depositAmount > 2000) {
+        return res.status(400).json({ message: 'Amount exceeds 2000 CAD limit.' });
+    }
 
-//     try {
-//         const database = client.db('sample_mflix');
-//         const collection = database.collection('bankData');
+    try {
+        const database = client.db('sample_mflix');
+        const collection = database.collection('bankData');
 
-//         // Find the user by their email
-//         const user = await collection.findOne({ email: 'volodyaruzhak@gmail.com' });
+        // Find the user by their email
+        const user = await collection.findOne({ email: email });
 
-//         console.log('User found:', user); // Log user object to inspect accounts
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
 
-//         // Validate accounts and transfer amount
-//         const fromAccount = user.accounts.find(acc => acc.accountType === fromAccountNumber);
+        const account = user.accounts.find(acc => acc.accountType === accountType);
 
-//         if (!fromAccount) {
-//             console.error('Invalid account types');
-//             return res.status(400).json({ message: 'Invalid account types' });
-//         }
+        if (!account) {
+            return res.status(404).json({ message: 'Account not found.' });
+        }
 
-//         if (fromAccount.balance < amount) {
-//             console.error('Insufficient funds');
-//             return res.status(400).json({ message: 'Insufficient funds' });
-//         }
+        account.balance += depositAmount;
 
-//         // Ensure amount is a number
-//         const parsedAmount = Number(amount);
-//         if (isNaN(parsedAmount)) {
-//             console.error('Invalid amount');
-//             return res.status(400).json({ message: 'Invalid amount' });
-//         }
+        // Update the user's accounts in MongoDB
+        await collection.updateOne(
+            { email: email },
+            { $set: { accounts: user.accounts } }
+        );
 
-//         // Perform the transfer
-//         fromAccount.balance -= parsedAmount;
-
-//         // Update the user's accounts in MongoDB
-//         await collection.updateOne(
-//             { email: 'volodyaruzhak@gmail.com' },
-//             { $set: { accounts: user.accounts } }
-//         );
-
-//         // Log the activity
-//         const activity = {
-//             id: user.activities.length + 1,
-//             date: new Date().toISOString(),
-//             description: description || `Payment from ${fromAccount.accountType} account`,
-//             amount: -parsedAmount,
-//         };
-//         user.activities.push(activity);
-
-//         await collection.updateOne(
-//             { email: 'volodyaruzhak@gmail.com' },
-//             { $set: { activities: user.activities } }
-//         );
-
-//         console.log('Payment successful:', activity);
-//         res.status(200).json({ message: 'Payment successful', activity });
-//     } catch (err) {
-//         console.error('Payment error:', err);
-//         res.status(500).json({ message: 'Internal server error' });
-//     }
-// });
+        res.json({ message: 'Deposit successful.', user });
+    } catch (error) {
+        console.error('Error during deposit:', error);
+        res.status(500).json({ message: 'Internal server error.' });
+    }
+});
 
 // POST /api/activity route
 router.post('/activity', async (req, res) => {
-    const { email, fromAccountNumber, amount, description } = req.body;
+    const { email, fromAccountNumber, amount, description, category } = req.body;
 
-    console.log('Payment request received:', { email, fromAccountNumber, amount, description });
+    console.log('Payment request received:', { email, fromAccountNumber, amount, description, category });
 
     try {
         const database = client.db('sample_mflix');
@@ -463,9 +381,12 @@ router.post('/activity', async (req, res) => {
         // Log the activity
         const activity = {
             id: user.activities.length + 1,
-            date: new Date().toISOString(),
+            date: new Date().toISOString().replace('T', ' ').slice(0, 16), // This will format the date as YYYY-MM-DD HH:MM
             description: description || `Payment from ${fromAccount.accountType} account`,
             amount: -parsedAmount,
+            //this needed for filtering in the front end
+            accountType: fromAccountNumber,
+            category: category || 'General', // Default to 'General' if no category is provided
         };
         user.activities.push(activity);
 
@@ -481,26 +402,6 @@ router.post('/activity', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
-
-
-
-// GET /api/user route
-// router.get('/user', async (req, res) => {
-//     try {
-//         const database = client.db('sample_mflix');
-//         const collection = database.collection('bankData');
-
-//         // Find the user by their email
-//         const user = await collection.findOne({ email: 'volodyaruzhak@gmail.com' });
-
-//         res.status(200).json(user);
-//     } catch (err) {
-//         console.error('Error fetching user data:', err);
-//         res.status(500).json({ message: 'Internal server error' });
-//     }
-// });
-
-
 
 // GET /api/user route
 router.get('/user', async (req, res) => {

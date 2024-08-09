@@ -1,10 +1,26 @@
+import { useState } from 'react';
 import { Account } from '../types/type';
+import DepositMoneyModal from './DepositMoneyModal';
 
 type AccountProps = {
     accounts: Account[];
 };
 
 const AccountSummary = ({ accounts }: AccountProps) => {
+
+    // Modal for deposit
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedAccount, setSelectedAccount] = useState<string>('');
+
+    const openModal = (accountType: string) => {
+        setSelectedAccount(accountType);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedAccount('');
+    };
 
     if (!accounts) return <h1>No Activities.</h1>;
 
@@ -25,9 +41,22 @@ const AccountSummary = ({ accounts }: AccountProps) => {
                     <p>
                         <span className="font-semibold">Open Date:</span> {account.openDate}
                     </p>
+                    <button
+                        className="bg-green-500 text-white px-4 py-2 rounded mt-2"
+                        onClick={() => openModal(account.accountType)}
+                    >
+                        Deposit Money
+                    </button>
                     {index !== accounts.length -1 &&  <hr className="border-gray-400 my-4" />}
                 </div>
             ))}
+            {isModalOpen && (
+                <DepositMoneyModal
+                    accountType={selectedAccount}
+                    isOpen={isModalOpen}
+                    onClose={closeModal}
+                />
+            )}
         </div>
     );
 };

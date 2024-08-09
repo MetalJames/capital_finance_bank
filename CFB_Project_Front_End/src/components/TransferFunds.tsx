@@ -130,6 +130,7 @@ const TransferFunds = () => {
                     type="number"
                     id="amount"
                     name="amount"
+                    step="0.01"
                     value={formattedAmount}
                     onChange={handleChange}
                     placeholder="Enter Amount"
