@@ -244,10 +244,6 @@ const SignUp = () => {
                 </div>
                 <button type="submit" className="w-full bg-[#DEAC80] text-white py-2 rounded-lg mt-4 hover:bg-[#c79463]">Sign Up</button>
             </form>
-
-                        {/* Modal for success message */}
-                        {showModal && (
-
             {/* Modal for success message */}
             {showModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
