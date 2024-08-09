@@ -74,19 +74,14 @@ const Login = () => {
                 setErrorPassword(false);
                 setMessage("");
                 generateCaptcha();
-                //alert("Login successful!");
-                // Example: Redirect to a new page after successful login
-                // Assuming response.data contains user information
-                // setUser(response.data.user); // Update UserContext with logged-in user data
-                // navigate("/myaccount");
-                                // Show modal and set message
+                // Show modal and set message
                 setShowModal(true);
                 setModalMessage("Welcome! Logging you in...");
 
                 // Redirect after 1.5 seconds
                 setTimeout(() => {
                     setUser(response.data.user); // Update UserContext with logged-in user data
-                    navigate("/myaccount");
+                    navigate("/myaccount/personal_details");
                     setShowModal(false);
                 }, 1500);
             } catch (error: unknown) {
@@ -110,18 +105,7 @@ const Login = () => {
                 }
             }
         }
-        // } else {
-        //     setCaptchaError(false);
-        //     alert('Thank you! This is just a demo :)');
-        //     setEmail('');
-        //     setPassword('');
-        //     setRememberMe(false);
-        //     setErrorEmail(false);
-        //     setErrorPassword(false);
-        //     setMessage('');
-        //     generateCaptcha();
-        // }
-    }
+    };
 
     return (
         <div className="flex flex-col justify-center  items-center h-screen">
@@ -131,11 +115,11 @@ const Login = () => {
             <form onSubmit={handleSubmit} className="bg-[#EADBC8] p-6 rounded-b-md shadow-md w-full max-w-md">
                 <div className="mb-4">
                     <label className="block text-[#102C57] pb-[7px]">Username or Access Card</label>
-                    <GeneralInput text="text" placeholder="Email Address" value={email} propFunction={handleEnterEmail} error={errorEmail} className="border-none outline-none" />
+                    <GeneralInput text="text" placeholder="Email Address" value={email} propFunction={handleEnterEmail} error={errorEmail}/>
                 </div>
                 <div className="mb-4">
                     <label className="block text-[#102C57] pb-[7px]">Password</label>
-                    <GeneralInput text="password" placeholder="Password" value={password} propFunction={handleEnterPassword} error={errorPassword} className="border-none outline-none" />
+                    <GeneralInput text="password" placeholder="Password" value={password} propFunction={handleEnterPassword} error={errorPassword} />
                 </div>
                 {message && (
                     <div className="my-1 text-red-500 font-light text-[12px]">
@@ -148,7 +132,7 @@ const Login = () => {
                         <label className="text-[#102C57]">Remember Me</label>
                     </div>
                     
-                    <a href="#" className="text-[#102C57] cursor-pointer">Forgot your password?</a>
+                    <Link to="/forgot-password" className="text-sky-400 cursor-pointer">Forgot your password?</Link>
                 </div>
                 <div className="mb-4 flex items-center">
                     <label className="text-[#102C57]">Enter the sum of {captchaNum1} + {captchaNum2}:</label>

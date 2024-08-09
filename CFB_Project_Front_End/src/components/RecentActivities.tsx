@@ -1,14 +1,13 @@
-type Activity = {
-    id: number;
-    date: string;
-    description: string;
-};
+import { Activity } from "../types/type";
 
 type Props = {
     activities: Activity[];
 };
 
 const RecentActivities = ({ activities }: Props) => {
+
+    if (!activities) return <h1>No Activities.</h1>;
+
     return (
         <div className="mt-4 border border-gray-300 p-4 rounded-md">
             <h2 className="text-lg font-semibold mb-2">Recent Activities</h2>

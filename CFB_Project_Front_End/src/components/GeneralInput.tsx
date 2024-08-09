@@ -4,16 +4,15 @@ type Props = {
     value: string,
     propFunction: (e: React.ChangeEvent<HTMLInputElement>) => void,
     error?: boolean,
-    id?: string,
-    className:string
+    id?: string
 };
 
-const GeneralInput = ({text, placeholder, value, propFunction, error, id,className}: Props) => {
+const GeneralInput = ({text, placeholder, value, propFunction, error, id}: Props) => {
 
     return (
         <div>
             <input 
-                className={`${className} ${error ? 'border-red-500' : ''} w-full p-2 bg-white`}
+                className={`text-[#000] my-2 w-full border-4 ${!error ? 'border-[#243c5a]' : 'border-[red]'}`}
                 type={text} 
                 placeholder={placeholder} 
                 value={value}

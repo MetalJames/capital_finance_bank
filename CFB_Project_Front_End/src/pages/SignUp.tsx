@@ -130,22 +130,6 @@ const SignUp = () => {
                 setMessage("An unexpected error occurred. Please try again later.");
             }
         }
-        // //resetting all the fields
-        // alert('Thank you for signing up! This is just a demo :)');
-        // setFirstName('');
-        // setLastName('');
-        // setEmail('');
-        // setPhone('');
-        // setUnitNumber('');
-        // setStreetAddress('');
-        // setCity('');
-        // setProvince('');
-        // setPostalCode('');
-        // setPassword('');
-        // setConfirmPassword('');
-        // setAgree(false);
-        // setErrors({});
-        // setMessage('');
     }
 
     // Function to reset form fields and state
@@ -182,37 +166,37 @@ const SignUp = () => {
                 <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col">
                         <label className="text-sm font-semibold" htmlFor="firstName">First Name</label>
-                        <GeneralInput id="firstName" text="text" placeholder="First Name" value={firstName} propFunction={(e) => setFirstName(e.target.value)} error={!!errors.firstName} className="border-none outline-none"  />
+                        <GeneralInput id="firstName" text="text" placeholder="First Name" value={firstName} propFunction={(e) => setFirstName(e.target.value)} error={!!errors.firstName}  />
                         {getErrorMessage('firstName')}
                     </div>
                     <div className="flex flex-col">
                         <label className="text-sm font-semibold" htmlFor="lastName">Last Name</label>
-                        <GeneralInput id="lastName" text="text" placeholder="Last Name" value={lastName} propFunction={(e) => setLastName(e.target.value)} error={!!errors.lastName} className="border-none outline-none"  />
+                        <GeneralInput id="lastName" text="text" placeholder="Last Name" value={lastName} propFunction={(e) => setLastName(e.target.value)} error={!!errors.lastName} />
                         {getErrorMessage('lastName')}
                     </div>
                     <div className="flex flex-col col-span-2">
                         <label className="text-sm font-semibold" htmlFor="email">Email Address</label>
-                        <GeneralInput text="text" placeholder="Email Address" value={email} propFunction={(e) => setEmail(e.target.value)} error={!!errors.email} className="border-none outline-none"  />
+                        <GeneralInput text="text" placeholder="Email Address" value={email} propFunction={(e) => setEmail(e.target.value)} error={!!errors.email} />
                         {getErrorMessage('email')}
                     </div>
                     <div className="flex flex-col col-span-2">
                         <label className="text-sm font-semibold" htmlFor="phone">Phone Number</label>
-                        <GeneralInput text="text" placeholder="Phone Number" value={phone} propFunction={(e) => setPhone(e.target.value)} error={!!errors.phone} className="border-none outline-none"  />
+                        <GeneralInput text="text" placeholder="Phone Number" value={phone} propFunction={(e) => setPhone(e.target.value)} error={!!errors.phone}  />
                         {getErrorMessage('phone')}
                     </div>
                     <div className="flex flex-col col-span-2">
                         <label className="text-sm font-semibold" htmlFor="streetAddress">Street Address</label>
-                        <GeneralInput text="text" placeholder="Street Address" value={streetAddress} propFunction={(e) => setStreetAddress(e.target.value)} error={!!errors.streetAddress} className="border-none outline-none"  />
+                        <GeneralInput text="text" placeholder="Street Address" value={streetAddress} propFunction={(e) => setStreetAddress(e.target.value)} error={!!errors.streetAddress}  />
                         {getErrorMessage('streetAddress')}
                     </div>
                     <div className="flex flex-col col-span-2">
                         <label className="text-sm font-semibold" htmlFor="unitNumber">Unit Number (optional)</label>
-                        <GeneralInput text="text" placeholder="Unit Number" value={unitNumber} propFunction={(e) => setUnitNumber(e.target.value)} error={!!errors.unitNumber} className="border-none outline-none"  />
+                        <GeneralInput text="text" placeholder="Unit Number" value={unitNumber} propFunction={(e) => setUnitNumber(e.target.value)} error={!!errors.unitNumber} />
                         {getErrorMessage('unitNumber')}
                     </div>
                     <div className="flex flex-col">
                         <label className="text-sm font-semibold" htmlFor="city">City</label>
-                        <GeneralInput text="text" placeholder="City" value={city} propFunction={(e) => setCity(e.target.value)} error={!!errors.city} className="border-none outline-none" />
+                        <GeneralInput text="text" placeholder="City" value={city} propFunction={(e) => setCity(e.target.value)} error={!!errors.city} />
                         {getErrorMessage('city')}
                     </div>
                     <div className="flex flex-col">
@@ -231,17 +215,17 @@ const SignUp = () => {
                     </div>
                     <div className="flex flex-col">
                         <label className="text-sm font-semibold" htmlFor="postalCode">Postal Code</label>
-                        <GeneralInput text="text" placeholder="Postal Code" value={postalCode} propFunction={(e) => setPostalCode(e.target.value)} error={!!errors.postalCode} className="border-none outline-none"  />
+                        <GeneralInput text="text" placeholder="Postal Code" value={postalCode} propFunction={(e) => setPostalCode(e.target.value)} error={!!errors.postalCode}  />
                         {getErrorMessage('postalCode')}
                     </div>
                     <div className="flex flex-col col-span-2">
                         <label className="text-sm font-semibold" htmlFor="password">Password</label>
-                        <GeneralInput text="password" placeholder="Password" value={password} propFunction={(e) => setPassword(e.target.value)} error={!!errors.password} className="border-none outline-none"  />
+                        <GeneralInput text="password" placeholder="Password" value={password} propFunction={(e) => setPassword(e.target.value)} error={!!errors.password}  />
                         {getErrorMessage('password')}
                     </div>
                     <div className="flex flex-col col-span-2">
                         <label className="text-sm font-semibold" htmlFor="confirmPassword">Confirm Password</label>
-                        <GeneralInput text="password" placeholder="Confirm Password" value={confirmPassword} propFunction={(e) => setConfirmPassword(e.target.value)} error={!!errors.confirmPassword} className="border-none outline-none" />
+                        <GeneralInput text="password" placeholder="Confirm Password" value={confirmPassword} propFunction={(e) => setConfirmPassword(e.target.value)} error={!!errors.confirmPassword}/>
                         {getErrorMessage('confirmPassword')}
                     </div>
                 </div>

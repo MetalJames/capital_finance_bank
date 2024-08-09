@@ -1,18 +1,13 @@
-// AccountSummary.tsx
-import React from 'react';
+import { Account } from '../types/type';
 
 type AccountProps = {
-    accountNumber: string;
-    balance: number;
-    accountType: string;
-    openDate: string;
+    accounts: Account[];
 };
 
-type Props = {
-    accounts: AccountProps[];
-};
+const AccountSummary = ({ accounts } : AccountProps) => {
 
-const AccountSummary: React.FC<Props> = ({ accounts }) => {
+    if (!accounts) return <h1>No Activities.</h1>;
+    
     return (
         <div className="border border-gray-300 p-4 rounded-md">
             <h2 className="text-lg font-semibold mb-2">Account Summary</h2>

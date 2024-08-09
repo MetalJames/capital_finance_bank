@@ -1,15 +1,12 @@
 import { Link } from "react-router-dom";
-import { AccountSummary, PersonalDetails, RecentActivities, TransactionHistory } from "../components";
+import { MyAccountNavBar, AccountSummary, PersonalDetails, RecentActivities, TransactionHistory, TransferFunds, MakeAPayment } from "../components";
 import person_image from  "../assets/Accout_holder_image2.png"
-import TransferFunds from "../components/TransferFunds";
-import MakeAPayment from "../components/MakeAPayment";
 import useUserContext from "../hooks/useUserContext";
+import { Route, Routes } from "react-router-dom";
 
 
-const MyAccountPage: React.FC = () => {
-  // Example data (replace with actual fetched data)
-    const { user } = useUserContext();
-    console.log(user);
+const MyAccountPage = () => {
+    const { user, refreshUserData } = useUserContext();
 
     return (
         <div className="min-h-screen bg-white flex flex-col">
@@ -32,37 +29,31 @@ const MyAccountPage: React.FC = () => {
                                 </div>
                             </div>
                         </div>
-                        
-                        {/* {isLoggedIn ? (
-                            <div className="grid grid-cols-1 gap-4">
-                            <PersonalDetails name={name} email={email} phone={phone} address={address} />
-                            <AccountSummary accountNumber={accountNumber} balance={balance} accountType={accountType} openDate={openDate} />
-                            <TransactionHistory transactions={transactions} />
-                            <RecentActivities activities={activities} />
-                            </div>
-                        ) : (
-                        <div className="text-center">
-                        <p className="mb-4">You are not logged in. Please log in to view your account.</p>
-                        <Link to="/login" className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded inline-block">Log In</Link>
-                        </div>
-                        )} */
-                        }
-
-
                         {user ? (
                         <div className="border-1 border-dashed bg-[#EADBC8] rounded-lg">
                         <div className="grid grid-cols-1 gap-3">
-                            <PersonalDetails 
-                                name={`${user.firstName} ${user.lastName}`}
+                        <header>
+                            <MyAccountNavBar />
+                        </header>
+                        <Routes>
+                            <Route path="personal_details" element={<PersonalDetails
+                                firstName={user.firstName} 
+                                lastName={user.lastName}
                                 email={user.email}
                                 phone={user.phone}
-                                address={`${user.unitNumber ? user.unitNumber + ", " : ""}${user.streetAddress}, ${user.city}, ${user.province}, ${user.postalCode}`}
-                            />
-                            <TransactionHistory transactions={user.transactions} />
-                            <AccountSummary accounts={user.accounts} />
-                            <RecentActivities activities={user.activities} />
-                            <TransferFunds />
-                            <MakeAPayment />
+                                unitNumber={user.unitNumber ? user.unitNumber : ""}
+                                streetAddress={user.streetAddress}
+                                city={user.city}
+                                province={user.province}
+                                postalCode={user.postalCode}
+                                updateUser={refreshUserData}
+                            />} />
+                            <Route path="transaction_history" element={<TransactionHistory transactions={user.transactions} />} />
+                            <Route path="account_summary" element={<AccountSummary accounts={user.accounts} />} />
+                            <Route path="recent_activities" element={<RecentActivities activities={user.activities} />} />
+                            <Route path="transfer_funds" element={<TransferFunds />} />
+                            <Route path="make_a_payment" element={<MakeAPayment />} />
+                        </Routes>
                         </div>
                         </div>
                         ) : (
