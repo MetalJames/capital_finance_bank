@@ -2,6 +2,14 @@ const express = require('express');
 const router = express.Router();
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
+const User = require('../models/User'); // Your Mongoose User model
+
+// Function to generate random account number
+const generateAccountNumber = () => {
+    const min = 1000000000;
+    const max = 9999999999;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -34,6 +42,7 @@ router.post('/login', async (req, res) => {
         }
 
         // Successful login
+        req.session.user = user; // Store user data in session
         res.status(200).json({ message: 'Login successful', user });
     } catch (err) {
         console.error('Login error:', err);
@@ -44,6 +53,8 @@ router.post('/login', async (req, res) => {
 // POST /api/register route
 router.post('/register', async (req, res) => {
     const { firstName, lastName, email, phone, unitNumber, streetAddress, city, province, postalCode, password } = req.body;
+    // Generate random account number
+    const accountNumber = generateAccountNumber();
 
     try {
         const database = client.db('sample_mflix');
@@ -56,7 +67,7 @@ router.post('/register', async (req, res) => {
         }
 
         // Create a new user
-        const newUser = {
+        const newUser = new User ({
             firstName,
             lastName,
             email,
@@ -67,7 +78,37 @@ router.post('/register', async (req, res) => {
             province,
             postalCode,
             password,
-        };
+            accounts: [
+                {
+                    accountNumber: accountNumber.toString(), // Convert to string if needed
+                    balance: 5000,
+                    accountType: "Checking",
+                    openDate: new Date()
+                },
+                {
+                    accountNumber: accountNumber.toString() + '-SAV', // Append suffix to differentiate accounts
+                    balance: 3000,
+                    accountType: "Saving",
+                    openDate: new Date()
+                },
+                {
+                    accountNumber: accountNumber.toString() + '-CRD', // Append suffix to differentiate accounts
+                    balance: 1000,
+                    accountType: "Credit",
+                    openDate: new Date()
+                }
+            ],
+            transactions: [
+                { id: 1, date: "2023-06-01", description: "Grocery Store", amount: -54.23 },
+                { id: 2, date: "2023-06-02", description: "Salary", amount: 2000.00 },
+                { id: 3, date: "2023-06-03", description: "Electricity Bill", amount: -123.45 },
+            ],
+            activities: [
+                { id: 1, date: "2023-06-01", description: "Logged in from IP 123.456.789.000" },
+                { id: 2, date: "2023-06-02", description: "Transferred $200 to Savings" },
+                { id: 3, date: "2023-06-03", description: "Changed password" },
+            ],
+        });
 
         // Insert the new user into the collection
         await collection.insertOne(newUser);
@@ -76,6 +117,315 @@ router.post('/register', async (req, res) => {
         res.status(201).json({ message: 'User registered successfully', user: newUser });
     } catch (err) {
         console.error('Registration error:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// Forgot Password
+router.get('/forgot-password', async (req, res) => {
+    const { email } = req.query;
+    if (!email) {
+        return res.status(400).json({ error: 'Email query parameter is required' });
+    }
+
+    try {
+        const database = client.db('sample_mflix');
+        const collection = database.collection('bankData');
+        const users = await collection.find({}).toArray();
+        const user = users.find(user => user.email === email);
+
+        if (user) {
+            res.json({ password: user.password });
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+// PUT /api/updateUser:email route
+router.put('/user/:email', async (req, res) => {
+    const { email } = req.params;
+    const { firstName, lastName, phone, unitNumber, streetAddress, city, province, postalCode, password } = req.body;
+
+    try {
+        const database = client.db('sample_mflix');
+        const collection = database.collection('bankData');
+
+        const user = await collection.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const updatedUser = {
+            firstName: firstName || user.firstName,
+            lastName: lastName || user.lastName,
+            phone: phone || user.phone,
+            unitNumber: unitNumber || user.unitNumber,
+            streetAddress: streetAddress || user.streetAddress,
+            city: city || user.city,
+            province: province || user.province,
+            postalCode: postalCode || user.postalCode,
+            password: password || user.password
+        };
+
+        await collection.updateOne(
+            { email: email },
+            { $set: updatedUser }
+        );
+
+        res.status(200).json({ message: 'User updated successfully', user: updatedUser });
+    } catch (err) {
+        console.error('Update user error:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// DELETE /api/deleteUser route
+router.delete('/user/:email', async (req, res) => {
+    const { email } = req.params;
+
+    try {
+        const database = client.db('sample_mflix');
+        const collection = database.collection('bankData');
+
+        const result = await collection.deleteOne({ email });
+
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Destroy session after deletion
+        req.session.destroy(err => {
+            if (err) {
+                return res.status(500).json({ message: 'Failed to clear session' });
+            }
+
+            res.status(200).json({ message: 'User deleted and session cleared' });
+        });
+
+        //res.status(200).json({ message: 'User deleted successfully' });
+    } catch (err) {
+        console.error('Delete user error:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// POST /transfer route
+router.post('/transfer', async (req, res) => {
+    const { email, fromAccountNumber, toAccountNumber, amount } = req.body;
+
+    console.log('Transfer request received:', { email, fromAccountNumber, toAccountNumber, amount });
+
+    try {
+        const database = client.db('sample_mflix');
+        const collection = database.collection('bankData');
+
+        // Find the user by their email
+        const user = await collection.findOne({ email: email });
+
+        if (!user) {
+            console.error('User not found');
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        console.log('User found:', user); // Log user object to inspect accounts
+
+        // Validate accounts and transfer amount
+        const fromAccount = user.accounts.find(acc => acc.accountType === fromAccountNumber);
+        const toAccount = user.accounts.find(acc => acc.accountType === toAccountNumber);
+
+        if (!fromAccount || !toAccount) {
+            console.error('Invalid account types');
+            return res.status(400).json({ message: 'Invalid account types' });
+        }
+
+        const parsedAmount = parseFloat(amount);
+
+        if (isNaN(parsedAmount) || fromAccount.balance < parsedAmount) {
+            console.error('Insufficient funds or invalid amount');
+            return res.status(400).json({ message: 'Insufficient funds or invalid amount' });
+        }
+
+        // Perform the transfer
+        fromAccount.balance -= parsedAmount;
+        toAccount.balance += parsedAmount;
+
+        // Update the user's accounts in MongoDB
+        await collection.updateOne(
+            { email: email },
+            { $set: { accounts: user.accounts } }
+        );
+
+        // Log the transaction (optional)
+        const transaction = {
+            id: user.transactions.length + 1,
+            date: new Date().toISOString().replace('T', ' ').slice(0, 16), // This will format the date as YYYY-MM-DD HH:MM
+            description: `Transfer from ${fromAccount.accountType} to ${toAccount.accountType}`,
+            amount: -parsedAmount,
+            //this needed for filtering in the front end
+            accountType: fromAccountNumber,
+        };
+        user.transactions.push(transaction);
+
+        await collection.updateOne(
+            { email: email },
+            { $set: { transactions: user.transactions } }
+        );
+
+        console.log('Transfer successful:', transaction);
+        res.status(200).json({ message: 'Transfer successful', transaction });
+    } catch (err) {
+        console.error('Transfer error:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// POST /deposit route
+router.post('/deposit', async (req, res) => {
+    console.log('Request body:', req.body);
+    const { email, accountType, amount } = req.body;
+    const depositAmount = parseFloat(amount);
+
+    if (isNaN(depositAmount) || depositAmount <= 0) {
+        return res.status(400).json({ message: 'Invalid deposit amount.' });
+    }
+
+    if (depositAmount > 2000) {
+        return res.status(400).json({ message: 'Amount exceeds 2000 CAD limit.' });
+    }
+
+    try {
+        const database = client.db('sample_mflix');
+        const collection = database.collection('bankData');
+
+        // Find the user by their email
+        const user = await collection.findOne({ email: email });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        const account = user.accounts.find(acc => acc.accountType === accountType);
+
+        if (!account) {
+            return res.status(404).json({ message: 'Account not found.' });
+        }
+
+        account.balance += depositAmount;
+
+        // Update the user's accounts in MongoDB
+        await collection.updateOne(
+            { email: email },
+            { $set: { accounts: user.accounts } }
+        );
+
+        res.json({ message: 'Deposit successful.', user });
+    } catch (error) {
+        console.error('Error during deposit:', error);
+        res.status(500).json({ message: 'Internal server error.' });
+    }
+});
+
+// POST /api/activity route
+router.post('/activity', async (req, res) => {
+    const { email, fromAccountNumber, amount, description, category } = req.body;
+
+    console.log('Payment request received:', { email, fromAccountNumber, amount, description, category });
+
+    try {
+        const database = client.db('sample_mflix');
+        const collection = database.collection('bankData');
+
+        // Find the user by their email
+        const user = await collection.findOne({ email: email });
+
+        if (!user) {
+            console.error('User not found');
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        console.log('User found:', user); // Log user object to inspect accounts
+
+        // Validate accounts and transfer amount
+        const fromAccount = user.accounts.find(acc => acc.accountType === fromAccountNumber);
+
+        if (!fromAccount) {
+            console.error('Invalid account types');
+            return res.status(400).json({ message: 'Invalid account types' });
+        }
+
+        if (fromAccount.balance < amount) {
+            console.error('Insufficient funds');
+            return res.status(400).json({ message: 'Insufficient funds' });
+        }
+
+        // Ensure amount is a number
+        const parsedAmount = Number(amount);
+        if (isNaN(parsedAmount)) {
+            console.error('Invalid amount');
+            return res.status(400).json({ message: 'Invalid amount' });
+        }
+
+        // Perform the transfer
+        fromAccount.balance -= parsedAmount;
+
+        // Update the user's accounts in MongoDB
+        await collection.updateOne(
+            { email: email },
+            { $set: { accounts: user.accounts } }
+        );
+
+        // Log the activity
+        const activity = {
+            id: user.activities.length + 1,
+            date: new Date().toISOString().replace('T', ' ').slice(0, 16), // This will format the date as YYYY-MM-DD HH:MM
+            description: description || `Payment from ${fromAccount.accountType} account`,
+            amount: -parsedAmount,
+            //this needed for filtering in the front end
+            accountType: fromAccountNumber,
+            category: category || 'General', // Default to 'General' if no category is provided
+        };
+        user.activities.push(activity);
+
+        await collection.updateOne(
+            { email: email },
+            { $set: { activities: user.activities } }
+        );
+
+        console.log('Payment successful:', activity);
+        res.status(200).json({ message: 'Payment successful', activity });
+    } catch (err) {
+        console.error('Payment error:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// GET /api/user route
+router.get('/user', async (req, res) => {
+    const { email } = req.query;
+
+    if (!email) {
+        return res.status(400).json({ message: 'Email parameter is required' });
+    }
+
+    try {
+        const database = client.db('sample_mflix');
+        const collection = database.collection('bankData');
+
+        // Find the user by their email
+        const user = await collection.findOne({ email: email });
+
+        if (!user) {
+            console.error('User not found');
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json(user);
+    } catch (err) {
+        console.error('Error fetching user data:', err);
         res.status(500).json({ message: 'Internal server error' });
     }
 });
