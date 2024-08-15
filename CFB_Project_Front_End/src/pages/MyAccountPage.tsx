@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MyAccountNavBar, AccountSummary, PersonalDetails, RecentActivities, TransactionHistory, TransferFunds, MakeAPayment } from "../components";
+import { MyAccountNavBar, AccountSummary, PersonalDetails, RecentActivities,Dashboard, TransactionHistory, TransferFunds, MakeAPayment } from "../components";
 import person_image from  "../assets/Accout_holder_image2.png"
 import useUserContext from "../hooks/useUserContext";
 import { Route, Routes } from "react-router-dom";
@@ -49,6 +49,7 @@ const MyAccountPage = () => {
                                     <Route path="account_summary" element={<AccountSummary accounts={user.accounts} />} />
                                     <Route path="transaction_history" element={<TransactionHistory transactions={user.transactions} />} />
                                     <Route path="recent_activities" element={<RecentActivities activities={user.activities} />} />
+                                    <Route path="dashboard" element={<Dashboard activities={user.activities} />} />
                                     <Route path="transfer_funds" element={<TransferFunds />} />
                                     <Route path="make_a_payment" element={<MakeAPayment />} />
                                 </Routes>

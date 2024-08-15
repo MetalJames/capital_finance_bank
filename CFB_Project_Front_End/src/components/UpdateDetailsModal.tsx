@@ -5,9 +5,9 @@ const UpdateDetailsModal = ({ isOpen, formData, handleChange, handleSubmit, clos
 
     return (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-        <div className="bg-white p-6 rounded shadow-lg w-full max-w-lg max-h-screen overflow-y-auto">
+            <div className="bg-white p-6 rounded shadow-lg w-full max-w-lg max-h-screen overflow-y-auto">
             <div className="bg-white p-6 rounded-md w-full max-w-lg">
-                <h3 className="text-lg font-semibold mb-4">Update Details</h3>
+                <h3 className="text-lg font-bold mb-4">Update Details</h3>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label className="block font-semibold mb-2">First Name</label>
@@ -128,7 +128,7 @@ const UpdateDetailsModal = ({ isOpen, formData, handleChange, handleSubmit, clos
                 </form>
             </div>
         </div>
-    </div>
+        </div>
     );
 };
 

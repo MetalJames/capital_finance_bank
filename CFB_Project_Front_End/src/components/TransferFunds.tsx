@@ -4,7 +4,7 @@ import UserContext from "../context/UserContext";
 
 const TransferFunds = () => {
     const { user, refreshUserData } = useContext(UserContext);
-
+    
     // Create Axios instance with base URL
     const axiosInstance = axios.create({
         baseURL: 'http://localhost:5000/api', // Adjust as per your backend server setup
@@ -130,6 +130,7 @@ const TransferFunds = () => {
                     type="number"
                     id="amount"
                     name="amount"
+                    step="0.01"
                     value={formattedAmount}
                     onChange={handleChange}
                     placeholder="Enter Amount"
@@ -143,7 +144,7 @@ const TransferFunds = () => {
                     <div className="bg-white p-4 rounded-lg shadow-md max-w-sm">
                         <h2 className="text-xl font-bold mb-4">Error</h2>
                         <p className="mb-4">{message}</p>
-                        <button onClick={() => setShowModal(false)} className="bg-[#102C57] text-white px-4 py-2 rounded-md hover:bg-blue-900 transition-colors duration-200">Close</button>
+                        <button onClick={() => setShowModal(false)} className="bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-900 transition-colors duration-200">Close</button>
                     </div>
                 </div>
             )}

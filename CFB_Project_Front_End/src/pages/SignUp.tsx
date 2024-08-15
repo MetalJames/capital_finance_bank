@@ -156,10 +156,10 @@ const SignUp = () => {
 
     return (
         <div className=" min-h-screen flex flex-col justify-center items-center py-6">
-            <div className="text-center mb-6">
-                <h1 className="text-3xl font-bold mb-2">EasyWeb Register</h1>
+            <div className="text-center  m-4 rounded align-middle p-[5px] px-[25px] max-w-md w-[23%] bg-[#DEAC80]">
+                <h1 className="text-3xl text-bold bg-[#DEAC80] font-medium text-[#102C57]">EasyWeb Register</h1>
                 <p className="text-sm">
-                    Already have an account? <Link to="/login" className="text-[#DEAC80] cursor-pointer">Please Login</Link>
+                    Already have an account? <Link to="/login" className="text-sky-800 cursor-pointer">Please Login</Link>
                 </p>
             </div>
             <form onSubmit={handleSubmit} className="w-full max-w-lg bg-[#F7E9D7] p-8 rounded-lg shadow-md">

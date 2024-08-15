@@ -34,6 +34,12 @@ const MyAccountNavBar = () => {
                     Recent Activities
                 </p>
             </Link>
+            <Link to="dashboard">
+                <p className={`${isActive("/myaccount/dashboard") ? "text-white border-b-2 border-white" : "text-gray-500 border-transparent"
+                } text-black inline-flex items-center px-5 pt-1 text-sm font-medium`}>
+                    Dashboard
+                </p>
+            </Link>
             <Link to="transfer_funds">
                 <p className={`${isActive("/myaccount/transfer_funds") ? "text-white border-b-2 border-white" : "text-gray-500 border-transparent"
                 } text-black inline-flex items-center px-5 pt-1 text-sm font-medium`}>

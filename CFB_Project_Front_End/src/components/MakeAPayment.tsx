@@ -16,7 +16,9 @@ const MakeAPayment = () => {
         fromAccountNumber: '',
         amount: '',
         description: '',
+        category: ''
     });
+
 
     // State for modal
     const [showModal, setShowModal] = useState(false);
@@ -32,13 +34,14 @@ const MakeAPayment = () => {
             setShowModal(true);
             return;
         }
-
+        
         try {
             const response = await axiosInstance.post('/activity', { 
                 email: user?.email,
                 fromAccountNumber: activity.fromAccountNumber, 
                 amount: amount, // Correctly passing the amount from state
-                description: activity.description
+                description: activity.description,
+                category: activity.category, // Pass the selected categor
             });
             refreshUserData(user!.email);
             console.log(response.data);
@@ -46,6 +49,7 @@ const MakeAPayment = () => {
                 fromAccountNumber: '',
                 amount: '',
                 description: '',
+                category: ''
             });
             setSuccessModal(true); // Show success modal
         } catch (error) {
@@ -68,6 +72,14 @@ const MakeAPayment = () => {
     const handleChangeActivity = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setActivity({ ...activity, [name]: name === 'amount' ? value : value }); // Adjusted for 'amount' name
+    };
+
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        if (name === 'amount' && value) {
+            const formattedAmount = parseFloat(value).toFixed(2);
+            setActivity({ ...activity, amount: formattedAmount });
+        }
     };
 
     if (!user?.accounts) return <h1>No Activities.</h1>;
@@ -99,6 +111,7 @@ const MakeAPayment = () => {
                         value={activity.amount}
                         step="0.01" // Allow decimal amounts
                         onChange={handleChangeActivity}
+                        onBlur={handleBlur}
                         placeholder="Enter Amount"
                     />
                 </div>
@@ -112,7 +125,24 @@ const MakeAPayment = () => {
                         onChange={handleChangeActivity}
                     />
                 </div>
-                <button onClick={handleActivity}  className="bg-[#102C57] text-white mt-4 px-4 py-2 rounded-md hover:bg-blue-900 transition-colors duration-200">Pay</button>
+                <div>
+                    <label htmlFor="category">Category:</label>
+                    <select
+                        id="category"
+                        name="category"
+                        value={activity.category}
+                        onChange={handleChangeActivity}
+                    >
+                        <option value="">Select Category</option>
+                        <option value="General">General</option>
+                        <option value="Food and Groceries">Food and Groceries</option>
+                        <option value="Transportation and Car Gas">Transportation and Car Gas</option>
+                        <option value="Utility Bills">Utility Bills</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="CellPhone and Internet Bills">CellPhone and Internet Bills</option>
+                    </select>
+                </div>
+                <button onClick={handleActivity} className="bg-[#102C57] text-white mt-4 px-4 py-2 rounded-md hover:bg-blue-900 transition-colors duration-200">Pay</button>
 
                 {/* Modal for error message */}
                 {showModal && (
@@ -130,7 +160,7 @@ const MakeAPayment = () => {
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                         <div className="bg-white p-4 rounded-lg shadow-md max-w-sm">
                             <h2 className="text-xl font-bold mb-4">Success</h2>
-                            <p className="mb-4">Transfer completed successfully!</p>
+                            <p className="mb-4">Payment completed successfully!</p>
                             <button onClick={() => setSuccessModal(false)} className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors duration-200">Close</button>
                         </div>
                     </div>

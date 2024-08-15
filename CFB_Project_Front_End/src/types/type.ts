@@ -13,13 +13,17 @@ export type Transaction = {
     date: string;
     description: string;
     amount: number;
+    accountType: string;
 };
 
 //Activity props
 export type Activity = {
     id: number;
     date: string;
+    amount: number;
     description: string;
+    accountType: string;
+    category: string;
 }
 
 export type User = {
