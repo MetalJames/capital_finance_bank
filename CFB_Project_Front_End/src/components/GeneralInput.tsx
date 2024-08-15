@@ -4,7 +4,7 @@ type Props = {
     value: string,
     propFunction: (e: React.ChangeEvent<HTMLInputElement>) => void,
     error?: boolean,
-    id?: string,
+    id?: string
 };
 
 const GeneralInput = ({text, placeholder, value, propFunction, error, id}: Props) => {
