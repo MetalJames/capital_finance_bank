@@ -65,7 +65,7 @@ describe('MyAccountPage Component', () => {
       </Router>
     );
 
-    expect(screen.getByText('My Account')).toBeInTheDocument();
+    expect(screen.getByText('Personal Details')).toBeInTheDocument();
     expect(screen.getByText('John Doe')).toBeInTheDocument();
     expect(screen.getByText('john.doe@example.com')).toBeInTheDocument();
     expect(screen.getByText('123-456-7890')).toBeInTheDocument();

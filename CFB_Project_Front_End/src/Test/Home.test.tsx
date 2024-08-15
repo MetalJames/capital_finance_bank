@@ -35,7 +35,7 @@ describe('Home Component', () => {
 
     expect(getByText('Sign Up').closest('a')).toHaveAttribute('href', '/signup');
     expect(getByText('Personal').closest('a')).toHaveAttribute('href', '/login');
-    expect(getByText('Support').closest('a')).toHaveAttribute('href', '/contactus');
+    expect(getByText('Support').closest('a')).toHaveAttribute('href', '/support');
   });
 
 });

@@ -24,6 +24,7 @@ test('should navigate to ... when link is clicked', () => {
     renderWithRouter(<Support />);
   
     const link = screen.getByText('New User? Please Sign Up');
+
   
     fireEvent.click(link);
  
