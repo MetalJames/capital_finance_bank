@@ -5,10 +5,12 @@
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "mongodb": "^6.7.0",
-    "mongoose": "^8.5.0"
+    "mongoose": "^8.5.0",
+    "recharts": "^2.12.7"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
+    "@types/recharts": "^1.8.29",
     "@vitejs/plugin-react": "^4.3.1"
   }
 }
