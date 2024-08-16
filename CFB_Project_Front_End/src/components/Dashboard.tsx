@@ -1,6 +1,7 @@
 import { Activity } from "../types/type";
 import { useState } from "react";
 import { Pie } from "react-chartjs-2";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip , ResponsiveContainer } from 'recharts';
 import {
     Chart as ChartJS,
     ArcElement,
@@ -28,7 +29,7 @@ const RecentActivities = ({ activities }: Props) => {
 
     if (!filteredActivities || filteredActivities.length === 0) return <h1>No Activities.</h1>;
 
-
+    // Code for PIE CHART
     // Predefined categories
     const categories = [
         "General",
@@ -78,6 +79,24 @@ const RecentActivities = ({ activities }: Props) => {
         maintainAspectRatio: false, // Allow control over height and width
     };
 
+    // Code for TREND Line
+    const chartData = filteredActivities.reduce((acc, activity) => {
+        const utcDate = new Date(activity.date).toLocaleDateString(); // Format date as MMM-DD for consistent orderin
+        const existingEntry = acc.find(entry => entry.date === utcDate);
+        if (existingEntry) {
+            existingEntry.amount += activity.amount;
+        } else {
+            acc.push({
+                date: utcDate,
+                amount: activity.amount,
+            });
+        }
+        return acc;
+    }, [] as { date: string; amount: number; }[]);
+
+    // Sort data by date
+    chartData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
     return (
         <div className="mt-4 border border-gray-300  bg-[#EADBC8] p-6 rounded-md">
             <h2 className="text-lg font-bold mb-2">Expenditure by Category</h2>
@@ -109,8 +128,27 @@ const RecentActivities = ({ activities }: Props) => {
                     Credit
                 </button>
             </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div>
             <div className="mt-4 " style={{ height: '500px', width: '500px' }}>
                     <Pie data={pieData} options={pieOptions} />
+            </div>
+        </div>
+        {/* Trend Line Chart */}
+        <div className="bg-[#ddc5b0] p-4 rounded-md shadow-lg">
+                    <h3 className="text-center text-lg font-bold mb-4">Expenditure Over Time</h3>
+                    <div className="mt-4">
+                    <ResponsiveContainer width="100%" height={300}>
+                        <LineChart data={chartData}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="date" />
+                            <YAxis />
+                            <RechartsTooltip />
+                            <Line type="monotone" dataKey="amount" stroke="#0070C0" activeDot={{ r: 8 }} />
+                        </LineChart>
+                    </ResponsiveContainer>
+                    </div>
+                </div>
             </div>
         </div>
         
