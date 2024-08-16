@@ -7,7 +7,8 @@ const TransferFunds = () => {
 
     // Create Axios instance with base URL
     const axiosInstance = axios.create({
-        baseURL: 'http://localhost:5000/api', // Adjust as per your backend server setup
+        //baseURL: 'http://localhost:5000/api', // Adjust as per your backend server setup
+        baseURL: 'https://capital-finance-bank.onrender.com/api', // Adjust as per your backend server setup
     });
 
     // State for transfer form

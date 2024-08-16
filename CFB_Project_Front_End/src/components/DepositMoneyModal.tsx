@@ -41,7 +41,8 @@ const DepositMoneyModal = ({ accountType, isOpen, onClose }: DepositMoneyModalPr
         }
 
         try {
-            const response = await axios.post('http://localhost:5000/api/deposit', {
+            //const response = await axios.post('http://localhost:5000/api/deposit', {
+            const response = await axios.post('https://capital-finance-bank.onrender.com/api/deposit', {
                 email: user?.email,
                 accountType,
                 amount: depositAmount,

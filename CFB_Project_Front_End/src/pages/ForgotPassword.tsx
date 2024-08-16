@@ -14,7 +14,8 @@ const ForgotPassword: React.FC = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.get('http://localhost:5000/api/forgot-password', { params: { email } });
+            //const response = await axios.get('http://localhost:5000/api/forgot-password', { params: { email } });
+            const response = await axios.get('https://capital-finance-bank.onrender.com/api/forgot-password', { params: { email } });
             setPassword(response.data.password);
             setErrorMessage(undefined);
             setShowModal(true);
