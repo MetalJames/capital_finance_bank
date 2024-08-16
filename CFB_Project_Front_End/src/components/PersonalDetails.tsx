@@ -100,7 +100,8 @@ const PersonalDetails = ({ firstName, lastName, email, phone, unitNumber, street
                 postalCode: formData.postalCode !== postalCode ? formData.postalCode : "",
             };
 
-            await axios.put(`http://localhost:5000/api/user/${encodeURIComponent(email)}`, updatedData);
+            //await axios.put(`http://localhost:5000/api/user/${encodeURIComponent(email)}`, updatedData);
+            await axios.put(`https://capital-finance-bank.onrender.com/api/user/${encodeURIComponent(email)}`, updatedData);
             updateUser(email);
             closeModal();
             openSuccessModal("Your details have been updated successfully!");
@@ -112,7 +113,8 @@ const PersonalDetails = ({ firstName, lastName, email, phone, unitNumber, street
 
         const handleDeleteUser = async () => {
             try {
-                await axios.delete(`http://localhost:5000/api/user/${encodeURIComponent(email)}`);
+                //await axios.delete(`http://localhost:5000/api/user/${encodeURIComponent(email)}`);
+                await axios.delete(`https://capital-finance-bank.onrender.com/api/user/${encodeURIComponent(email)}`);
                 openSuccessModal("Your account was successfully deleted.");
             } catch (error) {
                 console.error('Error deleting user:', error);

@@ -100,7 +100,8 @@ const SignUp = () => {
         }
         try {
             // Make API call to register endpoint
-            const response = await axios.post("http://localhost:5000/api/register", {
+            //const response = await axios.post("http://localhost:5000/api/register", {
+            const response = await axios.post("https://capital-finance-bank.onrender.com/api/register", {
                 firstName,
                 lastName,
                 email,
