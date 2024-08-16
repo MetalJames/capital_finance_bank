@@ -25,7 +25,8 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     //const refreshUserData = async () => {
     const refreshUserData = async (email: string) => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/user`, {
+            //const response = await axios.get(`http://localhost:5000/api/user`, {
+            const response = await axios.get(`https://capital-finance-bank.onrender.com/api/user`, {
                 params: { email } // Pass the email as a query parameter
             });
             setUser(response.data);
