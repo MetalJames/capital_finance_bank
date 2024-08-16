@@ -13,10 +13,10 @@ type ContactSectionProps = {
 };
 
 const ContactSection: React.FC<ContactSectionProps> = ({ title, content, items }) => (
-  <div style={{ marginBottom: '20px' }}>
+  <div className="border-b border-black"  style={{ marginBottom: '20px',}}>
     <h2 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>{title}</h2>
     <p>{content}</p>
-    <ul>
+    <ul className="pb-5">
       {items.map((item, index) => (
         <li key={index}>
           {item.link ? (
@@ -69,7 +69,7 @@ const contactMethods = {
 };
 
 const ContactUs: React.FC = () => (
-  <div style={{ padding: '20px' }}>
+  <div className=" m-20 border border-gray-300 bg-[#EADBC8]  p-6 rounded-md" style={{ padding: '20px' }}>
     <h1 style={{ fontSize: '2rem', marginBottom: '20px' }}>Contact Us</h1>
     {Object.values(contactMethods).map((method, index) => (
       <ContactSection
